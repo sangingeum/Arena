@@ -1,18 +1,12 @@
 #pragma once
-#include <entt.hpp>
-#include "Component.hpp"
-#include "Config.hpp"
-#include <vector>
+#include <unordered_map>
 #include <memory>
-#include <map>
-#include "Scene.hpp"
-#include "SceneMenu.hpp"
 #include "SceneLoader.hpp"
 #include "ActionBinder.hpp"
-
+#include "Config.hpp"
 class GameSystem
 {
-	using SceneMap = std::map<SceneID, std::shared_ptr<Scene>>;
+	using SceneMap = std::unordered_map<SceneID, std::shared_ptr<Scene>>;
 private:
 	Config& m_config;
 	sf::RenderWindow m_window;
@@ -27,9 +21,11 @@ public:
 	}
 	~GameSystem() = default;
 	void run() {
+		sf::Clock clock;
 		while (m_window.isOpen()) {
+			float timeStep = clock.restart().asSeconds();
 			sUpdate();
-			sPhysics();
+			sPhysics(timeStep);
 			sHandleInput();
 			sRender();
 		}
@@ -69,11 +65,11 @@ private:
 		while (m_window.pollEvent(event))
 		{
 			Action action = ActionBinder::getAction(event);
-			getCurrentScene()->sHandleAction(std::move(action));
+			getCurrentScene()->sHandleAction(m_window, std::move(action));
 		}
 	}
-	void sPhysics() {
-		getCurrentScene()->sPhysics();
+	void sPhysics(float timeStep) {
+		getCurrentScene()->sPhysics(timeStep);
 	}
 	void sRender() {
 		m_window.clear();

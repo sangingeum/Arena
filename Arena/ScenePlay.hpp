@@ -10,10 +10,10 @@ public:
 	void sUpdate() override {
 
 	}
-	void sPhysics() override {
+	void sPhysics(float timeStep) override {
 
 	}
-	void sHandleAction(Action action) override {
+	void sHandleAction(sf::RenderWindow& window, Action action) override {
 
 	}
 };

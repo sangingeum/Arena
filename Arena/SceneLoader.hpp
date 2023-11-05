@@ -2,6 +2,7 @@
 #include <memory>
 #include "SceneMenu.hpp"
 #include "ScenePlay.hpp"
+
 class SceneLoader
 {
 public:
