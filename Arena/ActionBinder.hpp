@@ -9,12 +9,15 @@ private:
 	KeyMap m_keyMap;
 	ActionBinder() {
 		// Initial keyboard Binding
+		// Character movements
 		m_keyMap[sf::Keyboard::Scancode::W] = ActionID::characterMoveUp;
 		m_keyMap[sf::Keyboard::Scancode::A] = ActionID::characterMoveLeft;
 		m_keyMap[sf::Keyboard::Scancode::S] = ActionID::characterMoveDown;
 		m_keyMap[sf::Keyboard::Scancode::D] = ActionID::characterMoveRight;
 		m_keyMap[sf::Keyboard::Scancode::Space] = ActionID::characterJump;
-		//
+		// Camera
+		m_keyMap[sf::Keyboard::Scancode::Q] = ActionID::cameraMoveLeft;
+		m_keyMap[sf::Keyboard::Scancode::E] = ActionID::cameraMoveRight;
 
 	}
 	~ActionBinder() = default;
@@ -35,24 +38,43 @@ public:
 			return Action{ binder.m_keyMap[event.key.scancode], {false, 0, 0} };
 			break;
 		case sf::Event::MouseButtonPressed:
-			return Action{ ActionID::mousePrimary , {true, event.mouseButton.x, event.mouseButton.x} };
+			switch (event.mouseButton.button)
+			{
+			case sf::Mouse::Button::Left:
+				return Action{ ActionID::mousePrimary , {true, event.mouseButton.x, event.mouseButton.x} };
+				break;
+			case sf::Mouse::Button::Right:
+				return Action{ ActionID::mouseSecondary , {true, event.mouseButton.x, event.mouseButton.x} };
+				break;
+			}
 			break;
 		case sf::Event::MouseButtonReleased:
-			return Action{ ActionID::mousePrimary , {false, event.mouseButton.x, event.mouseButton.x} };
+			switch (event.mouseButton.button)
+			{
+			case sf::Mouse::Button::Left:
+				return Action{ ActionID::mousePrimary , {false, event.mouseButton.x, event.mouseButton.x} };
+				break;
+			case sf::Mouse::Button::Right:
+				return Action{ ActionID::mouseSecondary , {false, event.mouseButton.x, event.mouseButton.x} };
+				break;
+			}
 			break;
 		case sf::Event::MouseMoved:
-
+			return Action{ ActionID::mouseMove , {true, event.mouseButton.x, event.mouseButton.x} };
 			break;
 		case sf::Event::MouseWheelScrolled:
+		{
+			float zoom = 1.f;
+			if (std::abs(event.mouseWheelScroll.delta) <= 10) {
+				zoom -= ((int)event.mouseWheelScroll.delta) / 50.f;
+			}
+			return Action{ ActionID::cameraZoom , {true, zoom, 0} };
 			break;
-		default:
-			break;
-
 		}
-
-		return Action{ ActionID::cameraMoveDown, {false, 0, 0} };
+		default:
+			return Action{ ActionID::noAction, {false, 0, 0} };
+			break;
+		}
 	}
-private:
-
 };
 

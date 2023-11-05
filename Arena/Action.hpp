@@ -10,14 +10,14 @@ enum class ActionID {
 	characterMoveRight,
 	characterJump,
 	characterAttack,
-	cameraZoomIn,
-	cameraZoomOut,
+	cameraZoom,
 	cameraMoveUp,
 	cameraMoveLeft,
 	cameraMoveDown,
 	cameraMoveRight,
 	mousePrimary,
-	mouseSecondary
+	mouseSecondary,
+	mouseMove,
 };
 
 class Action
