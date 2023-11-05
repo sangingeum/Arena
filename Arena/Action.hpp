@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <tuple>
 
 enum class ActionID {
@@ -18,6 +17,7 @@ enum class ActionID {
 	mousePrimary,
 	mouseSecondary,
 	mouseMove,
+	windowClose
 };
 
 class Action

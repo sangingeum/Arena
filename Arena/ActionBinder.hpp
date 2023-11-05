@@ -2,6 +2,7 @@
 #include "Action.hpp"
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
+
 class ActionBinder
 {
 	using KeyMap = std::unordered_map<sf::Keyboard::Scancode, ActionID>;
@@ -41,10 +42,10 @@ public:
 			switch (event.mouseButton.button)
 			{
 			case sf::Mouse::Button::Left:
-				return Action{ ActionID::mousePrimary , {true, event.mouseButton.x, event.mouseButton.x} };
+				return Action{ ActionID::mousePrimary , {true, event.mouseButton.x, event.mouseButton.y} };
 				break;
 			case sf::Mouse::Button::Right:
-				return Action{ ActionID::mouseSecondary , {true, event.mouseButton.x, event.mouseButton.x} };
+				return Action{ ActionID::mouseSecondary , {true, event.mouseButton.x, event.mouseButton.y} };
 				break;
 			}
 			break;
@@ -52,10 +53,10 @@ public:
 			switch (event.mouseButton.button)
 			{
 			case sf::Mouse::Button::Left:
-				return Action{ ActionID::mousePrimary , {false, event.mouseButton.x, event.mouseButton.x} };
+				return Action{ ActionID::mousePrimary , {false, event.mouseButton.x, event.mouseButton.y} };
 				break;
 			case sf::Mouse::Button::Right:
-				return Action{ ActionID::mouseSecondary , {false, event.mouseButton.x, event.mouseButton.x} };
+				return Action{ ActionID::mouseSecondary , {false, event.mouseButton.x, event.mouseButton.y} };
 				break;
 			}
 			break;
@@ -71,6 +72,9 @@ public:
 			return Action{ ActionID::cameraZoom , {true, zoom, 0} };
 			break;
 		}
+		case sf::Event::Closed:
+			return Action{ ActionID::windowClose, {false, 0, 0} };
+			break;
 		default:
 			return Action{ ActionID::noAction, {false, 0, 0} };
 			break;
