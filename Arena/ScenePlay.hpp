@@ -72,17 +72,28 @@ public:
 			m_gameSystem.changeScene(SceneID::mainMenu, true, true);
 			break;
 		}
+		case ActionID::number2: {
+			m_gameSystem.pause();
+			break;
+		}
 		case ActionID::number3: {
-			m_gameSystem.changeResolution(1920, 1080);
+			m_gameSystem.unpause();
 			break;
 		}
 		case ActionID::number4: {
 			m_gameSystem.changeResolution(1280, 720);
 			break;
 		}
+		case ActionID::number5: {
+			m_gameSystem.changeResolution(1920, 1080);
+			break;
+		}
 		default:
 			break;
 		}
+
+	}
+	void changeResolution(unsigned width, unsigned height) override {
 
 	}
 private:

@@ -24,6 +24,7 @@ private:
 		m_keyMap[sf::Keyboard::Scancode::Num2] = ActionID::number2;
 		m_keyMap[sf::Keyboard::Scancode::Num3] = ActionID::number3;
 		m_keyMap[sf::Keyboard::Scancode::Num4] = ActionID::number4;
+		m_keyMap[sf::Keyboard::Scancode::Num5] = ActionID::number5;
 	}
 	~ActionBinder() = default;
 	ActionBinder(ActionBinder&) = delete;
@@ -35,19 +36,19 @@ public:
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			return Action{ binder.m_keyMap[event.key.scancode], {true, 0, 0} };
+			return Action{ binder.m_keyMap[event.key.scancode], {true, 0.f, 0.f} };
 			break;
 		case sf::Event::KeyReleased:
-			return Action{ binder.m_keyMap[event.key.scancode], {false, 0, 0} };
+			return Action{ binder.m_keyMap[event.key.scancode], {false, 0.f, 0.f} };
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
 			{
 			case sf::Mouse::Button::Left:
-				return Action{ ActionID::mousePrimary , {true, event.mouseButton.x, event.mouseButton.y} };
+				return Action{ ActionID::mousePrimary , {true, static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)} };
 				break;
 			case sf::Mouse::Button::Right:
-				return Action{ ActionID::mouseSecondary , {true, event.mouseButton.x, event.mouseButton.y} };
+				return Action{ ActionID::mouseSecondary , {true, static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)} };
 				break;
 			}
 			break;
@@ -55,15 +56,15 @@ public:
 			switch (event.mouseButton.button)
 			{
 			case sf::Mouse::Button::Left:
-				return Action{ ActionID::mousePrimary , {false, event.mouseButton.x, event.mouseButton.y} };
+				return Action{ ActionID::mousePrimary , {false, static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)} };
 				break;
 			case sf::Mouse::Button::Right:
-				return Action{ ActionID::mouseSecondary , {false, event.mouseButton.x, event.mouseButton.y} };
+				return Action{ ActionID::mouseSecondary , {false, static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)} };
 				break;
 			}
 			break;
 		case sf::Event::MouseMoved:
-			return Action{ ActionID::mouseMove , {true, event.mouseButton.x, event.mouseButton.x} };
+			return Action{ ActionID::mouseMove , {true, static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)} };
 			break;
 		case sf::Event::MouseWheelScrolled:
 		{
@@ -71,16 +72,17 @@ public:
 			if (std::abs(event.mouseWheelScroll.delta) <= 10) {
 				zoom -= ((int)event.mouseWheelScroll.delta) / 50.f;
 			}
-			return Action{ ActionID::cameraZoom , {true, zoom, 0} };
+			return Action{ ActionID::cameraZoom , {true, zoom, 0.f} };
 			break;
 		}
 		case sf::Event::Closed:
-			return Action{ ActionID::windowClose, {false, 0, 0} };
+			return Action{ ActionID::windowClose, {false, 0.f, 0.f} };
 			break;
 		default:
-			return Action{ ActionID::noAction, {false, 0, 0} };
+			return Action{ ActionID::noAction, {false, 0.f, 0.f} };
 			break;
 		}
+		return Action{ ActionID::noAction, {false, 0.f, 0.f} };
 	}
 };
 

@@ -5,16 +5,18 @@
 #include "SceneLoader.hpp"
 #include "ActionBinder.hpp"
 #include "Config.hpp"
+#include <mutex>
 
 class GameSystem : public BaseGameSystem
 {
+
 	using SceneMap = std::unordered_map<SceneID, std::shared_ptr<Scene>>;
 private:
 	Config& m_config;
 	sf::RenderWindow m_window;
 	SceneMap m_sceneMap;
 	SceneID m_currentSceneID{ SceneID::mainMenu };
-
+	bool m_pause{ false };
 public:
 	GameSystem()
 		: m_config(Config::instance()), m_window(sf::VideoMode(m_config.windowWidth, m_config.widowHeight), m_config.windowName)
@@ -26,8 +28,10 @@ public:
 		sf::Clock clock;
 		while (m_window.isOpen()) {
 			float timeStep = clock.restart().asSeconds();
-			sUpdate();
-			sPhysics(timeStep);
+			if (!m_pause) {
+				sUpdate();
+				sPhysics(timeStep);
+			}
 			sHandleInput();
 			sRender();
 		}
@@ -35,7 +39,12 @@ public:
 	void quit() override {
 		m_window.close();
 	}
-
+	void pause() override {
+		m_pause = true;
+	}
+	void unpause() override {
+		m_pause = false;
+	}
 	void changeScene(SceneID id, bool destroyCurrentScene, bool overwriteIfExists) override {
 		if (m_sceneMap.find(id) == m_sceneMap.end() || overwriteIfExists)
 			m_sceneMap[id] = SceneLoader::createScene(id, *this);
@@ -47,6 +56,9 @@ public:
 	void changeResolution(unsigned width = 1280, unsigned height = 720) override {
 		m_config.changeResolution(width, height);
 		m_window.setSize({ width, height });
+		for (auto& [id, scene] : m_sceneMap) {
+			scene->changeResolution(width, height);
+		}
 	}
 
 private:
