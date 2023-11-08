@@ -1,10 +1,12 @@
 #pragma once
 #include <unordered_map>
 #include <memory>
+#include "BaseGameSystem.hpp"
 #include "SceneLoader.hpp"
 #include "ActionBinder.hpp"
 #include "Config.hpp"
-class GameSystem
+
+class GameSystem : public BaseGameSystem
 {
 	using SceneMap = std::unordered_map<SceneID, std::shared_ptr<Scene>>;
 private:
@@ -20,7 +22,7 @@ public:
 		init();
 	}
 	~GameSystem() = default;
-	void run() {
+	void run() override {
 		sf::Clock clock;
 		while (m_window.isOpen()) {
 			float timeStep = clock.restart().asSeconds();
@@ -30,8 +32,16 @@ public:
 			sRender();
 		}
 	}
-	void quit() {
+	void quit() override {
 		m_window.close();
+	}
+
+	void changeScene(SceneID id, bool destroyCurrentScene, bool overwriteIfExists) override {
+		if (m_sceneMap.find(id) == m_sceneMap.end() || overwriteIfExists)
+			m_sceneMap[id] = SceneLoader::createScene(id, *this);
+		if (destroyCurrentScene)
+			m_sceneMap.erase(m_currentSceneID);
+		m_currentSceneID = id;
 	}
 
 private:
@@ -47,13 +57,6 @@ private:
 	}
 	inline std::shared_ptr<Scene> getCurrentScene() {
 		return m_sceneMap[m_currentSceneID];
-	}
-	void changeScene(SceneID id, bool destroyCurrentScene, bool overwriteIfExists) {
-		if (m_sceneMap.find(id) == m_sceneMap.end() || overwriteIfExists)
-			m_sceneMap[id] = SceneLoader::createScene(id);
-		if (destroyCurrentScene)
-			m_sceneMap.erase(m_currentSceneID);
-		m_currentSceneID = id;
 	}
 
 	// Game loop functions

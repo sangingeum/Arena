@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 enum class SceneID {
+	nothing,
 	mainMenu,
 	play,
 };

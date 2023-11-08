@@ -19,7 +19,11 @@ private:
 		// Camera
 		m_keyMap[sf::Keyboard::Scancode::Q] = ActionID::cameraMoveLeft;
 		m_keyMap[sf::Keyboard::Scancode::E] = ActionID::cameraMoveRight;
-
+		// Number
+		m_keyMap[sf::Keyboard::Scancode::Num1] = ActionID::number1;
+		m_keyMap[sf::Keyboard::Scancode::Num2] = ActionID::number2;
+		m_keyMap[sf::Keyboard::Scancode::Num3] = ActionID::number3;
+		m_keyMap[sf::Keyboard::Scancode::Num4] = ActionID::number4;
 	}
 	~ActionBinder() = default;
 	ActionBinder(ActionBinder&) = delete;

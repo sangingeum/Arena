@@ -17,7 +17,11 @@ enum class ActionID {
 	mousePrimary,
 	mouseSecondary,
 	mouseMove,
-	windowClose
+	windowClose,
+	number1,
+	number2,
+	number3,
+	number4,
 };
 
 class Action

@@ -1,41 +1,14 @@
 #pragma once
 #include "Scene.hpp"
+#include "BaseGameSystem.hpp"
 #include "Component.hpp"
 #include "Config.hpp"
-
-class myContactListener : public b2ContactListener {
-	entt::registry& m_registry;
-public:
-	myContactListener(entt::registry& registry)
-		: m_registry(registry)
-	{}
-
-	void BeginContact(b2Contact* contact) override {
-		for (auto* fixture : { contact->GetFixtureA() , contact->GetFixtureB() }) {
-			entt::entity entity = (entt::entity)fixture->GetBody()->GetUserData().pointer;
-			auto& cPhysics = m_registry.get<CPhysics>(entity);
-			auto& cRenderable = m_registry.get<CRenderable>(entity);
-			++cPhysics.numContacts;
-			cRenderable.shape.setFillColor(sf::Color::Green);
-		}
-
-	}
-	void EndContact(b2Contact* contact) override {
-		for (auto* fixture : { contact->GetFixtureA() , contact->GetFixtureB() }) {
-			entt::entity entity = (entt::entity)fixture->GetBody()->GetUserData().pointer;
-			auto& cPhysics = m_registry.get<CPhysics>(entity);
-			auto& cRenderable = m_registry.get<CRenderable>(entity);
-			--cPhysics.numContacts;
-			if (!cPhysics.numContacts)
-				cRenderable.shape.setFillColor(sf::Color::White);
-		}
-	}
-};
-
+#include "ContactListener.hpp"
 
 class SceneMenu : public Scene
 {
 	entt::registry m_registry{};
+	BaseGameSystem& m_gameSystem;
 	Config& m_config;
 	const b2Vec2 m_gravity{ 0, 9.8f };
 	b2World m_world{ m_gravity };
@@ -43,8 +16,9 @@ class SceneMenu : public Scene
 	int32 velocityIterations;
 	int32 positionIterations;
 public:
-	SceneMenu()
-		:m_config(Config::instance()),
+	SceneMenu(BaseGameSystem& gameSystem)
+		: m_gameSystem(gameSystem),
+		m_config(Config::instance()),
 		velocityIterations(m_config.velocityIterations),
 		positionIterations(m_config.positionIterations)
 	{
@@ -91,6 +65,10 @@ public:
 				m_registry.emplace<CPhysics>(entity, m_world, entity, 30 * ratio, 30 * ratio, worldPos.x, worldPos.y);
 				m_registry.emplace<CRenderable>(entity, 30 * ratio, 30 * ratio);
 			}
+			break;
+		}
+		case ActionID::number2: {
+			m_gameSystem.changeScene(SceneID::play, true, true);
 			break;
 		}
 		default:

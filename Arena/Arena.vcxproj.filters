@@ -15,17 +15,14 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{7df19ca0-535c-45fa-8a24-c2fdd361716d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{d0546883-a300-4117-ba9f-f7c00dff3d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Action">
+      <UniqueIdentifier>{59edfd0a-9cd7-4394-bffe-59c7d0fdf0c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Action.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionBinder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -41,21 +38,27 @@
     <ClCompile Include="ScenePlay.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="ContactListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseGameSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Action</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionBinder.cpp">
+      <Filter>Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Config.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Action.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionBinder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScenePlay.hpp">
@@ -69,6 +72,21 @@
     </ClInclude>
     <ClInclude Include="SceneMenu.hpp">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListener.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGameSystem.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.hpp">
+      <Filter>Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionBinder.hpp">
+      <Filter>Action</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
