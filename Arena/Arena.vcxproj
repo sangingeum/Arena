@@ -163,6 +163,7 @@
     <ClCompile Include="ActionBinder.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
     <ClCompile Include="ContactListener.cpp" />
+    <ClCompile Include="EntityCreator.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="ContactListener.hpp" />
+    <ClInclude Include="EntityCreator.hpp" />
     <ClInclude Include="GameSystem.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneLoader.hpp" />
