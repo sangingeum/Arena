@@ -44,6 +44,11 @@ public:
 		m_currentSceneID = id;
 	}
 
+	void changeResolution(unsigned width = 1280, unsigned height = 720) override {
+		m_config.changeResolution(width, height);
+		m_window.setSize({ width, height });
+	}
+
 private:
 	void init() {
 		m_window.setFramerateLimit(m_config.frameRate);

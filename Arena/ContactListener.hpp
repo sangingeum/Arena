@@ -3,10 +3,10 @@
 #include <entt.hpp>
 #include "Component.hpp"
 
-class myContactListener : public b2ContactListener {
+class ContactListenerWhiteGreen : public b2ContactListener {
 	entt::registry& m_registry;
 public:
-	myContactListener(entt::registry& registry)
+	ContactListenerWhiteGreen(entt::registry& registry)
 		: m_registry(registry)
 	{}
 
@@ -18,8 +18,8 @@ public:
 			++cPhysics.numContacts;
 			cRenderable.shape.setFillColor(sf::Color::Green);
 		}
-
 	}
+
 	void EndContact(b2Contact* contact) override {
 		for (auto* fixture : { contact->GetFixtureA() , contact->GetFixtureB() }) {
 			entt::entity entity = (entt::entity)fixture->GetBody()->GetUserData().pointer;

@@ -9,7 +9,7 @@ class ActionBinder
 private:
 	KeyMap m_keyMap;
 	ActionBinder() {
-		// Initial keyboard Binding
+		// Initial Keyboard Binding
 		// Character movements
 		m_keyMap[sf::Keyboard::Scancode::W] = ActionID::characterMoveUp;
 		m_keyMap[sf::Keyboard::Scancode::A] = ActionID::characterMoveLeft;
@@ -27,9 +27,7 @@ private:
 	}
 	~ActionBinder() = default;
 	ActionBinder(ActionBinder&) = delete;
-	ActionBinder(ActionBinder&&) = delete;
 	ActionBinder& operator=(ActionBinder&) = delete;
-	ActionBinder& operator=(ActionBinder&&) = delete;
 
 public:
 	static Action getAction(sf::Event event) {

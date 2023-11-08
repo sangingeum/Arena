@@ -2,13 +2,30 @@
 #include <box2d/box2d.h>
 #include <SFML/Graphics.hpp>
 #include <entt.hpp>
+#include "Config.hpp"
 
-struct CTrasnform
+struct CTransform
 {
 	sf::Transform transform;
-	CTrasnform()
+	CTransform()
 		: transform{ sf::Transform::Identity }
 	{}
+};
+
+struct CText
+{
+	sf::Text text;
+	CText(const sf::String& string) {
+		text.setFont(Config::instance().font);
+		text.setString(string);
+		text.setFillColor(sf::Color::White);
+		adjustCenter();
+		text.setCharacterSize(24);
+	}
+	void adjustCenter() {
+		auto bound = text.getLocalBounds();
+		text.setOrigin({ bound.width / 2.f, bound.height / 2.f });
+	}
 };
 
 struct CRenderable

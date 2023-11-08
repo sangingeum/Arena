@@ -6,8 +6,11 @@
 class Config
 {
 	Config()
-		:halfWindowWidth(windowWidth / 2.f), halfWindowHeight(widowHeight / 2.f)
-	{}
+	{
+		changeResolution(1280, 720);
+		if (!font.loadFromFile("font/PlaypenSans-Medium.ttf"))
+			throw std::runtime_error("Failed to load font file: font/PlaypenSans-Medium.ttf");
+	}
 	Config(const Config&) = delete;
 	void operator=(const Config&) = delete;
 	~Config() = default;
@@ -17,6 +20,14 @@ public:
 		static Config config;
 		return config;
 	}
+	void changeResolution(unsigned windowWidth_, unsigned widowHeight_) {
+		windowWidth = windowWidth_;
+		widowHeight = widowHeight_;
+		halfWindowWidth = windowWidth / 2.f;
+		halfWindowHeight = widowHeight / 2.f;
+	}
+
+	sf::Font font;
 	uint32_t frameRate{ 60 };
 	int windowWidth{ 1280 };
 	int widowHeight{ 720 };
