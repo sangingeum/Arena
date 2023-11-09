@@ -39,7 +39,15 @@ public:
 		}
 		return false;
 	}
-	void mouseMove(ActionArgument args) override {}
+	void mouseMove(ActionArgument args) override {
+		auto [_, x, y] = args;
+		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
+		x = transformedPoint.x;
+		y = transformedPoint.y;
+		for (auto& child : m_children) {
+			child->mouseMove({ _, x, y });
+		}
+	}
 	void addChildren(std::unique_ptr<UINode>&& node) {
 		m_children.emplace_back(std::move(node));
 	}

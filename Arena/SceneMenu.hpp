@@ -51,7 +51,9 @@ public:
 			// UI click
 			m_uigraph.mouseClick(std::move(action.args));
 			// Screen click
-
+			break;
+		case ActionID::mouseMove:
+			m_uigraph.mouseMove(std::move(action.args));
 			break;
 		case ActionID::number2: {
 			m_gameSystem.changeScene(SceneID::play, true, true);

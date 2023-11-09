@@ -28,7 +28,20 @@ public:
 		return false;
 	}
 	void mouseMove(ActionArgument args) override {
-
+		static sf::Color prevColor{ sf::Color::White };
+		auto [_, x, y] = args;
+		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
+		x = transformedPoint.x;
+		y = transformedPoint.y;
+		if (m_rect.getGlobalBounds().contains({ x, y })) {
+			setHot(true);
+			prevColor = m_rect.getFillColor();
+			m_rect.setFillColor(sf::Color::Cyan);
+		}
+		else {
+			setHot(false);
+			m_rect.setFillColor(prevColor);
+		}
 	}
 };
 

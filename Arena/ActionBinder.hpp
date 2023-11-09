@@ -64,7 +64,8 @@ public:
 			}
 			break;
 		case sf::Event::MouseMoved:
-			return Action{ ActionID::mouseMove , {true, static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)} };
+			return Action{ ActionID::mouseMove , {true, static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)} };
+
 			break;
 		case sf::Event::MouseWheelScrolled:
 		{

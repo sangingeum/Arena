@@ -15,8 +15,8 @@ public:
 	}
 	// Inherited via UINode
 	void render(sf::RenderWindow& window, sf::Transform transform) override {
+		// Render self
 		auto finalTransform = transform * getTransform();
-		// Render self 
 		window.draw(m_rect, finalTransform);
 		// Render childern
 		for (auto& child : m_children)
@@ -38,7 +38,15 @@ public:
 		return false;
 	}
 	void mouseMove(ActionArgument args) override {
-
+		auto [_, x, y] = args;
+		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
+		x = transformedPoint.x;
+		y = transformedPoint.y;
+		if (m_rect.getGlobalBounds().contains({ x, y })) {
+			for (auto& child : m_children) {
+				child->mouseMove({ _, x, y });
+			}
+		}
 	}
 	void addChildren(std::unique_ptr<UINode>&& node) {
 		m_children.emplace_back(std::move(node));
