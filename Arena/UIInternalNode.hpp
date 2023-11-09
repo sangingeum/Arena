@@ -52,12 +52,5 @@ public:
 		m_children.emplace_back(std::move(node));
 	}
 
-private:
-
-
-
-	bool checkIntegrity() {
-
-	}
 };
 

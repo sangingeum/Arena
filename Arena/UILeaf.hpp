@@ -9,7 +9,7 @@ public:
 	UILeaf(const sf::Transform& transform = sf::Transform::Identity)
 		: UINode(transform), m_rect({ 50, 50 })
 	{
-		m_rect.setFillColor(sf::Color::Yellow);
+		m_rect.setFillColor(sf::Color::White);
 	}
 	// Inherited via UINode
 	void render(sf::RenderWindow& window, sf::Transform transform) override {
@@ -22,26 +22,34 @@ public:
 		x = transformedPoint.x;
 		y = transformedPoint.y;
 		if (m_rect.getGlobalBounds().contains({ x, y })) {
-			m_rect.setFillColor(sf::Color::Green);
+			onClick();
 			return true;
 		}
 		return false;
 	}
 	void mouseMove(ActionArgument args) override {
-		static sf::Color prevColor{ sf::Color::White };
 		auto [_, x, y] = args;
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
 		x = transformedPoint.x;
 		y = transformedPoint.y;
 		if (m_rect.getGlobalBounds().contains({ x, y })) {
 			setHot(true);
-			prevColor = m_rect.getFillColor();
-			m_rect.setFillColor(sf::Color::Cyan);
+			onHot();
 		}
 		else {
 			setHot(false);
-			m_rect.setFillColor(prevColor);
+			onCold();
 		}
+	}
+
+	void onClick() override {
+		m_rect.setFillColor(sf::Color::Green);
+	}
+	void onHot() override {
+		m_rect.setFillColor(sf::Color::Cyan);
+	}
+	void onCold() override {
+		m_rect.setFillColor(sf::Color::White);
 	}
 };
 

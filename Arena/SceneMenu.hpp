@@ -27,7 +27,8 @@ public:
 		m_registry.view<CText, CTransform>().each([&](const entt::entity entiy, CText& cText, CTransform& cTransform) {
 			window.draw(cText.text, cTransform.transform);
 			});
-		m_uigraph.render(window);
+		if (!m_uigraph.getHidden())
+			m_uigraph.render(window);
 	}
 	void sUpdate() override {
 	}
@@ -60,15 +61,11 @@ public:
 			break;
 		}
 		case ActionID::characterMoveUp: {
-			m_registry.view<CText, CTransform>().each([](const entt::entity entiy, CText& cText, CTransform& cTransform) {
-				cText.text.setFillColor(sf::Color::Green);
-				});
+			m_uigraph.setHidden(false);
 			break;
 		}
 		case ActionID::characterMoveDown: {
-			m_registry.view<CText, CTransform>().each([](const entt::entity entiy, CText& cText, CTransform& cTransform) {
-				cText.text.setFillColor(sf::Color::White);
-				});
+			m_uigraph.setHidden(true);
 			break;
 		}
 		case ActionID::number4: {
@@ -97,7 +94,13 @@ private:
 		//EntityCreator::createText(m_registry, "Hi!!");
 		auto root = std::make_unique<UIInternalNode>();
 		auto node = std::make_unique<UIInternalNode>();
-		node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, 50, 0, 1, 50, 0, 0, 1)));
+		for (int i = 1; i <= 5; ++i) {
+			for (int j = 1; j <= 5; ++j) {
+				node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, i * 100, 0, 1, j * 100, 0, 0, 1)));
+			}
+		}
+		//node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, 50, 0, 1, 50, 0, 0, 1)));
+
 		root->addChildren(std::move(node));
 		m_uigraph.addChildren(std::move(root));
 	}

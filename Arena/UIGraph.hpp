@@ -29,6 +29,8 @@ public:
 	}
 	bool mouseClick(ActionArgument args) override {
 		auto [pressed, x, y] = args;
+		if (!pressed)
+			return false;
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
 		x = transformedPoint.x;
 		y = transformedPoint.y;

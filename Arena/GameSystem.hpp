@@ -9,7 +9,6 @@
 #include <iostream>
 class GameSystem : public BaseGameSystem
 {
-
 	using SceneMap = std::unordered_map<SceneID, std::shared_ptr<Scene>>;
 private:
 	Config& m_config;
@@ -64,6 +63,7 @@ public:
 
 private:
 	void init() {
+		m_window.setVerticalSyncEnabled(true);
 		m_window.setFramerateLimit(m_config.frameRate);
 		changeScene(SceneID::mainMenu, false, true);
 	}

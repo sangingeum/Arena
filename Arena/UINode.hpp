@@ -13,18 +13,30 @@ public:
 	UINode(const sf::Transform& transform = sf::Transform::Identity)
 		:m_transform(transform)
 	{}
+	virtual ~UINode() = default;
+	// 
 	virtual	void render(sf::RenderWindow& window, sf::Transform transform = sf::Transform::Identity) = 0;
 	virtual	bool mouseClick(ActionArgument args) = 0;
 	virtual	void mouseMove(ActionArgument args) = 0;
-	virtual void setHidden(bool hide) {
+	// getter & setter
+	inline virtual void setHidden(bool hide) {
 		m_hidden = hide;
 	}
-	virtual void setHot(bool hot) {
+	inline virtual void setHot(bool hot) {
 		m_hot = hot;
+	}
+	inline virtual bool getHidden() {
+		return m_hidden;
+	}
+	inline virtual bool getHot() {
+		return m_hot;
 	}
 	inline virtual sf::Transform& getTransform() {
 		return m_transform;
 	}
-	virtual ~UINode() = default;
+	// Event handlers
+	virtual void onHot() {}
+	virtual void onCold() {}
+	virtual void onClick() {}
 };
 
