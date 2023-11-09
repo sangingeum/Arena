@@ -16,6 +16,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{cc024f5e-7ba9-41bc-8a19-66827d3040f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{46a57eff-e2c8-4415-9236-f84fe6a0f71a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,18 @@
     </ClCompile>
     <ClCompile Include="EntityCreator.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="UINode.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UILeaf.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIInternalNode.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIGraph.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +103,18 @@
     </ClInclude>
     <ClInclude Include="EntityCreator.hpp">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UINode.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UILeaf.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInternalNode.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIGraph.hpp">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

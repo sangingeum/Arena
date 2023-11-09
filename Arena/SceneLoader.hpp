@@ -17,6 +17,7 @@ public:
 			break;
 		default:
 			// unknown ID
+			throw std::runtime_error("Unknown scene ID");
 			break;
 		}
 	}

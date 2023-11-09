@@ -29,14 +29,13 @@ public:
 
 	sf::Font font;
 	uint32_t frameRate{ 60 };
-	int windowWidth{ 1280 };
-	int widowHeight{ 720 };
+	unsigned windowWidth{ 1280 };
+	unsigned widowHeight{ 720 };
 	float halfWindowWidth;
 	float halfWindowHeight;
 	int32 velocityIterations{ 16 };
 	int32 positionIterations{ 6 };
 	const float pi{ 3.14159265358979323846f };
-	const float screenToWorldRatio{ 0.01f };
 	const float radianToDegree{ 57.2958f };
 	sf::String windowName{ "Arena" };
 };

@@ -4,16 +4,20 @@
 #include "Component.hpp"
 #include "Config.hpp"
 #include "EntityCreator.hpp"
+#include "UIGraph.hpp"
 
 class SceneMenu : public Scene
 {
 	entt::registry m_registry{};
 	BaseGameSystem& m_gameSystem;
 	Config& m_config;
+	UIGraph m_uigraph;
+
 public:
 	SceneMenu(BaseGameSystem& gameSystem)
 		: m_gameSystem(gameSystem),
-		m_config(Config::instance())
+		m_config(Config::instance()),
+		m_uigraph(m_config.windowWidth, m_config.widowHeight)
 	{
 		init();
 	}
@@ -23,6 +27,7 @@ public:
 		m_registry.view<CText, CTransform>().each([&](const entt::entity entiy, CText& cText, CTransform& cTransform) {
 			window.draw(cText.text, cTransform.transform);
 			});
+		m_uigraph.render(window);
 	}
 	void sUpdate() override {
 	}
@@ -42,6 +47,12 @@ public:
 			window.setView(curView);
 			break;
 		}
+		case ActionID::mousePrimary:
+			// UI click
+			m_uigraph.mouseClick(std::move(action.args));
+			// Screen click
+
+			break;
 		case ActionID::number2: {
 			m_gameSystem.changeScene(SceneID::play, true, true);
 			break;
@@ -58,11 +69,11 @@ public:
 				});
 			break;
 		}
-		case ActionID::number3: {
+		case ActionID::number4: {
 			m_gameSystem.changeResolution(1280, 720);
 			break;
 		}
-		case ActionID::number4: {
+		case ActionID::number5: {
 			m_gameSystem.changeResolution(1920, 1080);
 			break;
 		}
@@ -71,12 +82,22 @@ public:
 		}
 
 	}
-	void changeResolution(unsigned width, unsigned height) override {
 
+	// It will be called by the game system
+	void changeResolution(unsigned width, unsigned height) override {
+		m_uigraph.changeResolution(width, height);
+	}
+	void adjustView(sf::RenderWindow& window) override {
+		window.setView(sf::View{ sf::FloatRect{0.f, 0.f, 12.8f, 7.2f} });
 	}
 private:
 	void init() {
 		EntityCreator::createText(m_registry, "Hi!!");
+		auto root = std::make_unique<UIInternalNode>();
+		auto node = std::make_unique<UIInternalNode>();
+		node->addChildren(std::make_unique<UILeaf>());
+		root->addChildren(std::move(node));
+		m_uigraph.addChildren(std::move(root));
 	}
 
 };

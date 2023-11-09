@@ -170,6 +170,10 @@
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
+    <ClCompile Include="UIGraph.cpp" />
+    <ClCompile Include="UIInternalNode.cpp" />
+    <ClCompile Include="UILeaf.cpp" />
+    <ClCompile Include="UINode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.hpp" />
@@ -184,6 +188,10 @@
     <ClInclude Include="SceneLoader.hpp" />
     <ClInclude Include="SceneMenu.hpp" />
     <ClInclude Include="ScenePlay.hpp" />
+    <ClInclude Include="UIGraph.hpp" />
+    <ClInclude Include="UIInternalNode.hpp" />
+    <ClInclude Include="UILeaf.hpp" />
+    <ClInclude Include="UINode.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

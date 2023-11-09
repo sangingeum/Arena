@@ -25,9 +25,10 @@ enum class ActionID {
 	number5,
 };
 
+using ActionArgument = std::tuple<bool, float, float>;
+
 class Action
 {
-	using ActionArgument = std::tuple<bool, float, float>;
 public:
 	Action(ActionID id_, const ActionArgument& args_)
 		: id(id_), args(args_)

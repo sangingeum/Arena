@@ -6,7 +6,7 @@
 #include "ActionBinder.hpp"
 #include "Config.hpp"
 #include <mutex>
-
+#include <iostream>
 class GameSystem : public BaseGameSystem
 {
 
@@ -46,10 +46,11 @@ public:
 		m_pause = false;
 	}
 	void changeScene(SceneID id, bool destroyCurrentScene, bool overwriteIfExists) override {
-		if (m_sceneMap.find(id) == m_sceneMap.end() || overwriteIfExists)
-			m_sceneMap[id] = SceneLoader::createScene(id, *this);
 		if (destroyCurrentScene)
 			m_sceneMap.erase(m_currentSceneID);
+		if (m_sceneMap.find(id) == m_sceneMap.end() || overwriteIfExists)
+			m_sceneMap[id] = SceneLoader::createScene(id, *this);
+		m_sceneMap[id]->adjustView(m_window);
 		m_currentSceneID = id;
 	}
 
@@ -64,12 +65,6 @@ public:
 private:
 	void init() {
 		m_window.setFramerateLimit(m_config.frameRate);
-		float winHalfWidth = m_config.windowWidth / 2.f;
-		float winHalfHeight = m_config.widowHeight / 2.f;
-		auto curView = m_window.getView();
-		curView.setCenter({ winHalfWidth * m_config.screenToWorldRatio, winHalfHeight * m_config.screenToWorldRatio });
-		curView.zoom(m_config.screenToWorldRatio);
-		m_window.setView(curView);
 		changeScene(SceneID::mainMenu, false, true);
 	}
 	inline std::shared_ptr<Scene> getCurrentScene() {
