@@ -92,10 +92,10 @@ public:
 	}
 private:
 	void init() {
-		EntityCreator::createText(m_registry, "Hi!!");
+		//EntityCreator::createText(m_registry, "Hi!!");
 		auto root = std::make_unique<UIInternalNode>();
 		auto node = std::make_unique<UIInternalNode>();
-		node->addChildren(std::make_unique<UILeaf>());
+		node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, 50, 0, 1, 50, 0, 0, 1)));
 		root->addChildren(std::move(node));
 		m_uigraph.addChildren(std::move(root));
 	}

@@ -2,6 +2,7 @@
 #include "UIInternalNode.hpp"
 #include "UILeaf.hpp"
 
+// Root UI node
 class UIGraph : public UINode
 {
 private:
@@ -9,7 +10,9 @@ private:
 	Children m_children;
 	sf::View m_screenView;
 public:
-	UIGraph(unsigned width, unsigned height) {
+	UIGraph(unsigned width, unsigned height, const sf::Transform& transform = sf::Transform::Identity)
+		: UINode(transform)
+	{
 		changeResolution(width, height);
 	}
 	// Inherited via UINode
@@ -18,14 +21,19 @@ public:
 		auto curView = window.getView();
 		window.setView(m_screenView);
 		// Render
+		auto finalTransform = transform * getTransform();
 		for (auto& child : m_children)
-			child->render(window, transform);
+			child->render(window, finalTransform);
 		// Change back to the orginal view
 		window.setView(curView);
 	}
 	bool mouseClick(ActionArgument args) override {
+		auto [pressed, x, y] = args;
+		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
+		x = transformedPoint.x;
+		y = transformedPoint.y;
 		for (auto& child : m_children) {
-			if (child->mouseClick(std::move(args))) {
+			if (child->mouseClick({ pressed, x, y })) {
 				return true;
 			}
 		}
