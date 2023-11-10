@@ -19,7 +19,7 @@ private:
 	bool m_pause{ false };
 public:
 	GameSystem()
-		: m_config(Config::instance()), m_window(sf::VideoMode(m_config.windowWidth, m_config.widowHeight), m_config.windowName)
+		: m_config(Config::instance()), m_window(sf::VideoMode(m_config.windowWidth, m_config.widowHeight), m_config.windowName, sf::Style::Titlebar | sf::Style::Close)
 	{
 		init();
 	}
@@ -57,9 +57,11 @@ public:
 	void changeResolution(unsigned width = 1280, unsigned height = 720) override {
 		m_config.changeResolution(width, height);
 		m_window.setSize({ width, height });
+		//m_window.create(sf::VideoMode(m_config.windowWidth, m_config.widowHeight), m_config.windowName, sf::Style::Fullscreen);
 		for (auto& [id, scene] : m_sceneMap) {
 			scene->changeResolution(width, height);
 		}
+		getCurrentScene()->adjustView(m_window);
 	}
 
 private:

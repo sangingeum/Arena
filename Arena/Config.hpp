@@ -8,7 +8,7 @@ class Config
 	Config()
 	{
 		changeResolution(1280, 720);
-		if (!font.loadFromFile("font/PlaypenSans-Medium.ttf"))
+		if (!font.loadFromFile("asset/font/PlaypenSans-Medium.ttf"))
 			throw std::runtime_error("Failed to load font file: font/PlaypenSans-Medium.ttf");
 	}
 	Config(const Config&) = delete;

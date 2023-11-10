@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include "Action.hpp"
-// m_transform must do only translations since I'm changing the order of multiplications 
 
+// m_transform must do only translations since the order of multiplications could change.
 enum class UIAnchorType {
 	leftTop,
 	midTop,
@@ -21,7 +21,7 @@ class UINode
 protected:
 	sf::Transform m_transform;
 	sf::Vector2f m_anchor{ 0.f, 0.f };
-	sf::RectangleShape m_rect{ {0.f, 0.f} };
+	sf::Sprite m_sprite{};
 	UIAnchorType m_anchorType{ UIAnchorType::leftTop };
 	bool m_hidden{ false };
 	bool m_hot{ false };
@@ -62,8 +62,8 @@ public:
 	inline sf::Transform& getTransform() {
 		return m_transform;
 	}
-	inline sf::RectangleShape& getRect() {
-		return m_rect;
+	inline sf::Sprite& getSprite() {
+		return m_sprite;
 	}
 	inline void setAnchor(float x, float y) {
 		m_anchor.x = std::clamp(x, 0.0f, 1.0f);
@@ -72,10 +72,11 @@ public:
 protected:
 	sf::Transform getAnchorTransform() const {
 		auto transform = sf::Transform::Identity;
-		auto size = m_rect.getSize();
+		auto size = m_sprite.getGlobalBounds().getSize();
 		switch (m_anchorType)
 		{
 		case UIAnchorType::leftTop:
+			// sfml default
 			break;
 		case UIAnchorType::midTop:
 			transform.translate(-size.x / 2.f, 0);

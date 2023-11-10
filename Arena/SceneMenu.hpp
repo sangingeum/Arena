@@ -5,6 +5,8 @@
 #include "Config.hpp"
 #include "EntityCreator.hpp"
 #include "UIGraph.hpp"
+#include "AssetManager.hpp"
+#include <iostream>
 
 class SceneMenu : public Scene
 {
@@ -12,12 +14,13 @@ class SceneMenu : public Scene
 	BaseGameSystem& m_gameSystem;
 	Config& m_config{ Config::instance() };
 	UIGraph m_uigraph{};
-
+	AssetManager m_assetManager;
 public:
 	SceneMenu(BaseGameSystem& gameSystem)
 		: m_gameSystem(gameSystem)
 	{
 		init();
+
 	}
 	~SceneMenu() = default;
 	void sRender(sf::RenderWindow& window) override {
@@ -77,7 +80,6 @@ public:
 		default:
 			break;
 		}
-
 	}
 
 	// It will be called by the game system
@@ -90,31 +92,23 @@ public:
 private:
 	void init() {
 		auto mainBar = std::make_unique<UIInternalNode>();
-		for (int i = 0; i < 5; ++i) {
-			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 50.f + i * 100.f, 0, 1, 50.f, 0, 0, 1));
-			nodePtr->getRect().setSize({ 50.f, 50.f });
-			nodePtr->getRect().setFillColor(sf::Color::White);
-			mainBar->addChild(std::move(nodePtr));
-		}
-		mainBar->getRect().setFillColor(sf::Color{ 100, 100, 100, 100 });
-		mainBar->getRect().setSize({ 550, 150 });
+
+		mainBar->getSprite().setTexture(m_assetManager.getTexture(TextureID::list));
+		mainBar->getSprite().setTextureRect({ 0, 0, 111, 231 });
+		mainBar->getSprite().setScale(3.f, 2.f);
 		mainBar->setAnchor(0.5f, 0.9f);
 		mainBar->setAnchorType(UIAnchorType::midBottom);
-		//
-		auto sideBar = std::make_unique<UIInternalNode>();
-		for (int i = 0; i < 7; ++i) {
-			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 50.f, 0, 1, 50.f + i * 100.f, 0, 0, 1));
-			nodePtr->getRect().setSize({ 50.f, 50.f });
-			nodePtr->getRect().setFillColor(sf::Color::White);
-			sideBar->addChild(std::move(nodePtr));
+
+
+		for (int i = 0; i < 3; ++i) {
+			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 66.5f, 0, 1, 100.f + 100.f * i, 0, 0, 1));
+			nodePtr->getSprite().setTexture(m_assetManager.getTexture(TextureID::button));
+			nodePtr->getSprite().setTextureRect({ 0, 0, 200, 48 });
+			nodePtr->setOnClickHandler([&]() {m_gameSystem.changeScene(SceneID::play, true, true); });
+			mainBar->addChild(std::move(nodePtr));
 		}
-		sideBar->getRect().setFillColor(sf::Color{ 100, 100, 100, 100 });
-		sideBar->getRect().setSize({ 150, 750 });
-		sideBar->setAnchor(0.1f, 0.5f);
-		sideBar->setAnchorType(UIAnchorType::leftMid);
-		//
+
 		m_uigraph.addChild(std::move(mainBar));
-		m_uigraph.addChild(std::move(sideBar));
 		m_uigraph.changeResolution(m_config.windowWidth, m_config.widowHeight);
 
 	}

@@ -12,14 +12,14 @@ public:
 	UILeaf(const sf::Transform& transform = sf::Transform::Identity)
 		: UINode(transform)
 	{
-		setOnHotHandler([&]() {m_rect.setFillColor(sf::Color::Cyan); });
-		setOnColdHandler([&]() {m_rect.setFillColor(sf::Color::White); });
-		setOnClickHandler([&]() {m_rect.setFillColor(sf::Color::Red); });
+		setOnHotHandler([&]() {m_sprite.setColor(sf::Color::Yellow); });
+		setOnColdHandler([&]() {m_sprite.setColor(sf::Color::White); });
+		setOnClickHandler([&]() {m_sprite.setColor(sf::Color::Yellow); });
 	}
 
 	void render(sf::RenderWindow& window, sf::Transform transform) override {
 		auto finalTransform = transform * getTransform();
-		window.draw(m_rect, finalTransform);
+		window.draw(m_sprite, finalTransform);
 	}
 
 	bool mouseClick(ActionArgument args) override {
@@ -27,7 +27,7 @@ public:
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
 		x = transformedPoint.x;
 		y = transformedPoint.y;
-		if (m_rect.getGlobalBounds().contains({ x, y })) {
+		if (m_sprite.getGlobalBounds().contains({ x, y })) {
 			onClick();
 			return true;
 		}
@@ -39,7 +39,7 @@ public:
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
 		x = transformedPoint.x;
 		y = transformedPoint.y;
-		if (m_rect.getGlobalBounds().contains({ x, y })) {
+		if (m_sprite.getGlobalBounds().contains({ x, y })) {
 			setHot(true);
 			onHot();
 		}

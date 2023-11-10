@@ -104,7 +104,7 @@ private:
 		float winHalfWidth = 640;
 		float winHalfHeight = 360;
 		float ratio = 0.01f;
-		//Boundary boxes
+		// Boundary boxes
 		EntityCreator::createPhysicalBox(m_registry, m_world, winHalfWidth * ratio, 1 * ratio, winHalfWidth * ratio, 0, b2BodyType::b2_staticBody);
 		EntityCreator::createPhysicalBox(m_registry, m_world, winHalfWidth * ratio, 1 * ratio, winHalfWidth * ratio, winHalfHeight * 2.f * ratio, b2BodyType::b2_staticBody);
 		EntityCreator::createPhysicalBox(m_registry, m_world, 1 * ratio, winHalfHeight * ratio, 0, winHalfHeight * ratio, b2BodyType::b2_staticBody);

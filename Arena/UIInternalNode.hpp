@@ -15,7 +15,7 @@ public:
 	void render(sf::RenderWindow& window, sf::Transform transform) override {
 		// Render self
 		auto finalTransform = transform * getTransform();
-		window.draw(m_rect, finalTransform);
+		window.draw(m_sprite, finalTransform);
 		// Render childern
 		for (auto& child : m_children)
 			child->render(window, finalTransform);
@@ -26,7 +26,7 @@ public:
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
 		x = transformedPoint.x;
 		y = transformedPoint.y;
-		if (m_rect.getGlobalBounds().contains({ x, y })) {
+		if (m_sprite.getGlobalBounds().contains({ x, y })) {
 			for (auto& child : m_children) {
 				if (child->mouseClick({ pressed, x, y })) {
 					break;
@@ -42,7 +42,7 @@ public:
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
 		x = transformedPoint.x;
 		y = transformedPoint.y;
-		if (m_rect.getGlobalBounds().contains({ x, y })) {
+		if (m_sprite.getGlobalBounds().contains({ x, y })) {
 			for (auto& child : m_children) {
 				child->mouseMove({ _, x, y });
 			}
