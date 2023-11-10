@@ -7,6 +7,7 @@
 #include "Config.hpp"
 #include <mutex>
 #include <iostream>
+
 class GameSystem : public BaseGameSystem
 {
 	using SceneMap = std::unordered_map<SceneID, std::shared_ptr<Scene>>;

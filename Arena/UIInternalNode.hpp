@@ -4,16 +4,14 @@
 
 class UIInternalNode : public UINode
 {
+protected:
 	using Children = std::vector<std::unique_ptr<UINode>>;
 	Children m_children;
-	sf::RectangleShape m_rect;
 public:
 	UIInternalNode(const sf::Transform& transform = sf::Transform::Identity)
-		: UINode(transform), m_rect({ 700, 700 })
-	{
-		m_rect.setFillColor(sf::Color{ 50, 50, 50, 200 });
-	}
-	// Inherited via UINode
+		: UINode(transform)
+	{}
+
 	void render(sf::RenderWindow& window, sf::Transform transform) override {
 		// Render self
 		auto finalTransform = transform * getTransform();
@@ -22,6 +20,7 @@ public:
 		for (auto& child : m_children)
 			child->render(window, finalTransform);
 	}
+
 	bool mouseClick(ActionArgument args) override {
 		auto [pressed, x, y] = args;
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
@@ -37,6 +36,7 @@ public:
 		}
 		return false;
 	}
+
 	void mouseMove(ActionArgument args) override {
 		auto [_, x, y] = args;
 		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
@@ -48,7 +48,8 @@ public:
 			}
 		}
 	}
-	void addChildren(std::unique_ptr<UINode>&& node) {
+
+	void addChild(std::unique_ptr<UINode>&& node) {
 		m_children.emplace_back(std::move(node));
 	}
 

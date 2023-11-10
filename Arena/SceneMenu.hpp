@@ -10,18 +10,16 @@ class SceneMenu : public Scene
 {
 	entt::registry m_registry{};
 	BaseGameSystem& m_gameSystem;
-	Config& m_config;
-	UIGraph m_uigraph;
+	Config& m_config{ Config::instance() };
+	UIGraph m_uigraph{};
 
 public:
 	SceneMenu(BaseGameSystem& gameSystem)
-		: m_gameSystem(gameSystem),
-		m_config(Config::instance()),
-		m_uigraph(m_config.windowWidth, m_config.widowHeight)
+		: m_gameSystem(gameSystem)
 	{
 		init();
 	}
-
+	~SceneMenu() = default;
 	void sRender(sf::RenderWindow& window) override {
 		float radianToDegree = m_config.radianToDegree;
 		m_registry.view<CText, CTransform>().each([&](const entt::entity entiy, CText& cText, CTransform& cTransform) {
@@ -92,17 +90,22 @@ public:
 private:
 	void init() {
 		//EntityCreator::createText(m_registry, "Hi!!");
-		auto root = std::make_unique<UIInternalNode>();
 		auto node = std::make_unique<UIInternalNode>();
 		for (int i = 1; i <= 5; ++i) {
 			for (int j = 1; j <= 5; ++j) {
-				node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, i * 100, 0, 1, j * 100, 0, 0, 1)));
+				auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, i * 100.f, 0, 1, j * 100.f, 0, 0, 1));
+				nodePtr->getRect().setSize({ 50.f, 50.f });
+				nodePtr->getRect().setFillColor(sf::Color::White);
+
+				node->addChild(std::move(nodePtr));
 			}
 		}
 		//node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, 50, 0, 1, 50, 0, 0, 1)));
+		node->getRect().setFillColor(sf::Color{ 100, 100, 100, 100 });
+		node->getRect().setSize({ 700, 700 });
 
-		root->addChildren(std::move(node));
-		m_uigraph.addChildren(std::move(root));
+		m_uigraph.addChild(std::move(node));
+		m_uigraph.changeResolution(m_config.windowWidth, m_config.widowHeight);
 	}
 
 };
