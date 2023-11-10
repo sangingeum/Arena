@@ -19,6 +19,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{46a57eff-e2c8-4415-9236-f84fe6a0f71a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{6927362d-f8e8-4452-b3d4-ee8f1fce2923}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="UIGraph.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Asset</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="UIGraph.hpp">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.hpp">
+      <Filter>Asset</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

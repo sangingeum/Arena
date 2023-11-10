@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="ActionBinder.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="EntityCreator.cpp" />
@@ -178,6 +179,7 @@
   <ItemGroup>
     <ClInclude Include="Action.hpp" />
     <ClInclude Include="ActionBinder.hpp" />
+    <ClInclude Include="AssetManager.hpp" />
     <ClInclude Include="BaseGameSystem.hpp" />
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Config.hpp" />
