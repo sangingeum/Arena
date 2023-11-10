@@ -3,12 +3,26 @@
 #include <functional>
 #include "Action.hpp"
 // m_transform must do only translations since I'm changing the order of multiplications 
+
+enum class UIAnchorType {
+	leftTop,
+	midTop,
+	rightTop,
+	leftMid,
+	center,
+	rightMid,
+	leftBottom,
+	midBottom,
+	rightBottom,
+};
+
 class UINode
 {
 protected:
 	sf::Transform m_transform;
-	sf::Vector2f m_anchor{ 0.2f, 0.2f };
-	sf::RectangleShape m_rect{ {100.f, 100.f} };
+	sf::Vector2f m_anchor{ 0.f, 0.f };
+	sf::RectangleShape m_rect{ {0.f, 0.f} };
+	UIAnchorType m_anchorType{ UIAnchorType::leftTop };
 	bool m_hidden{ false };
 	bool m_hot{ false };
 public:
@@ -25,9 +39,12 @@ public:
 		m_transform.translate(x, y);
 	}
 	virtual	void changeResolution(unsigned width, unsigned height) {
-		auto transform = sf::Transform::Identity;
+		auto transform = getAnchorTransform();
 		transform.translate(m_anchor.x * width, m_anchor.y * height);
 		m_transform = std::move(transform);
+	}
+	virtual	void setAnchorType(UIAnchorType type) {
+		m_anchorType = type;
 	}
 	// getter & setter
 	inline void setHidden(bool hide) {
@@ -51,6 +68,43 @@ public:
 	inline void setAnchor(float x, float y) {
 		m_anchor.x = std::clamp(x, 0.0f, 1.0f);
 		m_anchor.y = std::clamp(y, 0.0f, 1.0f);
+	}
+protected:
+	sf::Transform getAnchorTransform() const {
+		auto transform = sf::Transform::Identity;
+		auto size = m_rect.getSize();
+		switch (m_anchorType)
+		{
+		case UIAnchorType::leftTop:
+			break;
+		case UIAnchorType::midTop:
+			transform.translate(-size.x / 2.f, 0);
+			break;
+		case UIAnchorType::rightTop:
+			transform.translate(-size.x, 0);
+			break;
+		case UIAnchorType::leftMid:
+			transform.translate(0, -size.y / 2.f);
+			break;
+		case UIAnchorType::center:
+			transform.translate(-size.x / 2.f, -size.y / 2.f);
+			break;
+		case UIAnchorType::rightMid:
+			transform.translate(-size.x, -size.y / 2.f);
+			break;
+		case UIAnchorType::leftBottom:
+			transform.translate(0, -size.y);
+			break;
+		case UIAnchorType::midBottom:
+			transform.translate(-size.x / 2.f, -size.y);
+			break;
+		case UIAnchorType::rightBottom:
+			transform.translate(-size.x, -size.y);
+			break;
+		default:
+			break;
+		}
+		return transform;
 	}
 };
 

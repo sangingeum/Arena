@@ -89,23 +89,34 @@ public:
 	}
 private:
 	void init() {
-		//EntityCreator::createText(m_registry, "Hi!!");
-		auto node = std::make_unique<UIInternalNode>();
-		for (int i = 1; i <= 5; ++i) {
-			for (int j = 1; j <= 5; ++j) {
-				auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, i * 100.f, 0, 1, j * 100.f, 0, 0, 1));
-				nodePtr->getRect().setSize({ 50.f, 50.f });
-				nodePtr->getRect().setFillColor(sf::Color::White);
-
-				node->addChild(std::move(nodePtr));
-			}
+		auto mainBar = std::make_unique<UIInternalNode>();
+		for (int i = 0; i < 5; ++i) {
+			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 50.f + i * 100.f, 0, 1, 50.f, 0, 0, 1));
+			nodePtr->getRect().setSize({ 50.f, 50.f });
+			nodePtr->getRect().setFillColor(sf::Color::White);
+			mainBar->addChild(std::move(nodePtr));
 		}
-		//node->addChildren(std::make_unique<UILeaf>(sf::Transform(1, 0, 50, 0, 1, 50, 0, 0, 1)));
-		node->getRect().setFillColor(sf::Color{ 100, 100, 100, 100 });
-		node->getRect().setSize({ 700, 700 });
-
-		m_uigraph.addChild(std::move(node));
+		mainBar->getRect().setFillColor(sf::Color{ 100, 100, 100, 100 });
+		mainBar->getRect().setSize({ 550, 150 });
+		mainBar->setAnchor(0.5f, 0.9f);
+		mainBar->setAnchorType(UIAnchorType::midBottom);
+		//
+		auto sideBar = std::make_unique<UIInternalNode>();
+		for (int i = 0; i < 7; ++i) {
+			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 50.f, 0, 1, 50.f + i * 100.f, 0, 0, 1));
+			nodePtr->getRect().setSize({ 50.f, 50.f });
+			nodePtr->getRect().setFillColor(sf::Color::White);
+			sideBar->addChild(std::move(nodePtr));
+		}
+		sideBar->getRect().setFillColor(sf::Color{ 100, 100, 100, 100 });
+		sideBar->getRect().setSize({ 150, 750 });
+		sideBar->setAnchor(0.1f, 0.5f);
+		sideBar->setAnchorType(UIAnchorType::leftMid);
+		//
+		m_uigraph.addChild(std::move(mainBar));
+		m_uigraph.addChild(std::move(sideBar));
 		m_uigraph.changeResolution(m_config.windowWidth, m_config.widowHeight);
+
 	}
 
 };

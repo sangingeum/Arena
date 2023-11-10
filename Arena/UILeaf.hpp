@@ -14,7 +14,7 @@ public:
 	{
 		setOnHotHandler([&]() {m_rect.setFillColor(sf::Color::Cyan); });
 		setOnColdHandler([&]() {m_rect.setFillColor(sf::Color::White); });
-		setOnClickHandler([&]() {m_rect.setFillColor(sf::Color::Green); });
+		setOnClickHandler([&]() {m_rect.setFillColor(sf::Color::Red); });
 	}
 
 	void render(sf::RenderWindow& window, sf::Transform transform) override {
