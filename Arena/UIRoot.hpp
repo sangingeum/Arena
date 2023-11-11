@@ -9,6 +9,9 @@ class UIRoot : public UIInternalNode
 {
 protected:
 	sf::View m_screenView;
+	bool m_dragging{ false };
+	UINode* m_draggedNode{ nullptr };
+	sf::Vector2f m_prevMousePos{};
 public:
 	UIRoot()
 		: UIInternalNode(sf::Transform::Identity)
@@ -27,15 +30,24 @@ public:
 
 	bool mouseClick(ActionArgument args) override {
 		auto [pressed, x, y] = args;
-		if (!pressed)
+		if (!pressed) {
+			m_dragging = false;
+			m_draggedNode = nullptr;
 			return false;
+		}
 		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child) {
 			if ((*child)->mouseClick({ pressed, x, y })) {
+				if ((*child)->getDraggable()) {
+					m_dragging = true;
+					m_draggedNode = (*child).get();
+					m_prevMousePos = { x, y };
+				}
 				if ((*child)->getFocus()) {
 					auto poppedChild = std::move(*child);
 					m_children.erase(std::next(child).base());
 					addChildBack(std::move(poppedChild));
 				}
+
 				return true;
 			}
 		}
@@ -44,11 +56,20 @@ public:
 
 	bool mouseMove(ActionArgument args, bool handled = false) override {
 		auto [_, x, y] = args;
+		// Dragging
+		if (m_dragging && m_draggedNode) {
+			m_draggedNode->translate(x - m_prevMousePos.x, y - m_prevMousePos.y);
+			m_prevMousePos = { x, y };
+		}
+
+		// Marking hot or cold
 		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child) {
 			handled |= (*child)->mouseMove({ _, x, y }, handled);
 		}
 		return handled;
 	}
+
+
 
 	void translate(float x, float y) override {
 		for (auto& child : m_children) {

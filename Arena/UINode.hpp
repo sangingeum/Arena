@@ -20,12 +20,13 @@ class UINode
 {
 protected:
 	sf::Transform m_transform; // m_transform must do only translations since the order of multiplications could change.
-	sf::Vector2f m_anchor{ 0.f, 0.f };
 	sf::Sprite m_sprite{};
-	UIAnchorType m_anchorType{ UIAnchorType::leftTop };
+	sf::Vector2f m_anchor{ 0.f, 0.f };
+	UIAnchorType m_anchorType{ UIAnchorType::leftTop }; // m_anchor and m_anchorType are used together to calculate the position of the node when the screen resolution changes
 	bool m_hidden{ false }; // Whether the node is hidden
 	bool m_hot{ false }; // Whether mouse is hovering on the node
 	bool m_focus{ true }; // Whether the node should be placed front when clicked
+	bool m_draggable{ true }; // Whether the node can be dragged
 public:
 	UINode(const sf::Transform& transform = sf::Transform::Identity)
 		: m_transform(transform)
@@ -79,7 +80,12 @@ public:
 	inline bool getFocus() {
 		return m_focus;
 	}
-
+	inline void setDraggable(bool draggable) {
+		m_draggable = draggable;
+	}
+	inline bool getDraggable() {
+		return m_draggable;
+	}
 protected:
 	sf::Transform getAnchorTransform() const {
 		auto transform = sf::Transform::Identity;
