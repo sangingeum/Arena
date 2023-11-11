@@ -49,6 +49,34 @@ bool UIInternalNode::mouseMove(ActionArgument args, bool handled) {
 	return false;
 }
 
+void UIInternalNode::popLater(UINode* ptr) {
+	m_toRemove.push_back(ptr);
+}
+
+void UIInternalNode::addLater(std::unique_ptr<UINode>&& ptr) {
+	m_toAdd.emplace_back(std::move(ptr));
+}
+
+void UIInternalNode::update(unsigned width, unsigned height) {
+	// Flush dead children
+	for (auto* ptr : m_toRemove) {
+		m_children.erase
+		(std::remove_if(m_children.begin(), m_children.end(),
+			[ptr](std::unique_ptr<UINode>& child) {
+				return child.get() == ptr; }),
+				m_children.end());
+	}
+	m_toRemove.clear();
+	// Add new children
+	if (m_toAdd.size() > 0) {
+		for (auto& ptr : m_toAdd) {
+			addChildBack(std::move(ptr));
+		}
+		changeResolution(width, height);
+	}
+	m_toAdd.clear();
+}
+
 void UIInternalNode::changeResolution(unsigned width, unsigned height)
 {
 	// Update the current transform
@@ -58,7 +86,7 @@ void UIInternalNode::changeResolution(unsigned width, unsigned height)
 	// Update children
 	auto size = m_sprite.getGlobalBounds().getSize();
 	for (auto& child : m_children) {
-		child->changeResolution(static_cast<float>(size.x), static_cast<float>(size.y));
+		child->changeResolution(static_cast<unsigned>(size.x), static_cast<unsigned>(size.y));
 	}
 }
 

@@ -26,6 +26,7 @@ public:
 			m_UIRoot.render(window);
 	}
 	void sUpdate() override {
+		m_UIRoot.update(m_config.windowWidth, m_config.windowHeight);
 	}
 	void sPhysics(float timeStep) override {
 	}
@@ -85,8 +86,8 @@ public:
 	}
 private:
 	void init() {
-		m_UIRoot.addChildBack(UIFactory::createMainMenu(m_gameSystem));
-		m_UIRoot.addChildBack(UIFactory::createSettingMenu(m_gameSystem, m_UIRoot));
+		m_UIRoot.addChildBack(UIFactory::createMainMenu(m_gameSystem, m_UIRoot));
+		//m_UIRoot.addChildBack(UIFactory::createSettingMenu(m_gameSystem, m_UIRoot));
 		m_UIRoot.changeResolution(m_config.windowWidth, m_config.windowHeight);
 	}
 

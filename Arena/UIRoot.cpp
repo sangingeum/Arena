@@ -26,7 +26,7 @@ bool UIRoot::mouseClick(ActionArgument args) {
 	for (auto child = m_children.rbegin(); child != m_children.rend(); ++child) {
 		// Check if the child is clicked
 		if ((*child)->mouseClick({ pressed, x, y })) {
-			// If draggable, set related vaiables 
+			// If draggable, set related vaiables
 			if ((*child)->getDraggable()) {
 				m_dragging = true;
 				m_draggedNode = (*child).get();
@@ -38,7 +38,6 @@ bool UIRoot::mouseClick(ActionArgument args) {
 				m_children.erase(std::next(child).base());
 				addChildBack(std::move(poppedChild));
 			}
-
 			return true;
 		}
 	}

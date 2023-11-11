@@ -1,12 +1,17 @@
 #pragma once
 #include "UINode.hpp"
 #include <deque>
+#include <vector>
 
 class UIInternalNode : public UINode
 {
 protected:
 	using Children = std::deque<std::unique_ptr<UINode>>;
+	using toRemove = std::vector<UINode*>;
+	using toAdd = std::vector<std::unique_ptr<UINode>>;
 	Children m_children;
+	toRemove m_toRemove;
+	toAdd m_toAdd;
 public:
 	UIInternalNode(const sf::Transform& transform = sf::Transform::Identity);
 	// Primary functions
@@ -18,6 +23,9 @@ public:
 	inline void addChildFront(std::unique_ptr<UINode>&& node);
 	inline void popChildBack();
 	inline void popChildFront();
+	void popLater(UINode* ptr);
+	void addLater(std::unique_ptr<UINode>&& ptr);
+	void update(unsigned width, unsigned height);
 	// Update functions
 	void changeResolution(unsigned width, unsigned height) override;
 };
