@@ -72,6 +72,9 @@
     <ClCompile Include="AssetManager.cpp">
       <Filter>Asset</Filter>
     </ClCompile>
+    <ClCompile Include="UIFactory.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScenePlay.hpp">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="AssetManager.hpp">
       <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="UIFactory.hpp">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
