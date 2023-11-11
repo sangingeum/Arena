@@ -1,8 +1,8 @@
 #pragma once
-#include <box2d/box2d.h>
-#include <SFML/Graphics.hpp>
-#include <entt.hpp>
 #include "Config.hpp"
+#include <box2d/box2d.h>
+#include <entt.hpp>
+#include <SFML/Graphics.hpp>
 
 struct CTransform
 {

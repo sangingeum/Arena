@@ -90,7 +90,7 @@ public:
 		nodePtr->setOnClickHandler([&, ptr = background.get()]() { uiRoot.popLater(ptr); });
 		nodePtr->setAnchor(0.5f, 0.7f);
 		nodePtr->setAnchorType(UIAnchorType::center);
-		nodePtr->setText("cancel");
+		nodePtr->setText("Cancel");
 		menu->addChildBack(std::move(nodePtr));
 
 		background->addChildBack(std::move(menu));
