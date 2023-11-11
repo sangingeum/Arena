@@ -49,3 +49,16 @@ bool UIInternalNode::mouseMove(ActionArgument args, bool handled) {
 	return false;
 }
 
+void UIInternalNode::changeResolution(unsigned width, unsigned height)
+{
+	// Update the current transform
+	auto transform = getAnchorTransform();
+	transform.translate(m_anchor.x * width, m_anchor.y * height);
+	m_transform = std::move(transform);
+	// Update children
+	auto size = m_sprite.getGlobalBounds().getSize();
+	for (auto& child : m_children) {
+		child->changeResolution(static_cast<float>(size.x), static_cast<float>(size.y));
+	}
+}
+

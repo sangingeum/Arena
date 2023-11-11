@@ -25,7 +25,7 @@ protected:
 	bool m_hidden{ false }; // Whether the node is hidden
 	bool m_hot{ false }; // Whether mouse is hovering on the node
 	bool m_focus{ true }; // Whether the node should be placed front when clicked
-	bool m_draggable{ true }; // Whether the node can be dragged
+	bool m_draggable{ false }; // Whether the node can be dragged
 public:
 	UINode(const sf::Transform& transform = sf::Transform::Identity);
 	virtual ~UINode() = default;

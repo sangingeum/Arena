@@ -18,7 +18,8 @@ public:
 	inline void addChildFront(std::unique_ptr<UINode>&& node);
 	inline void popChildBack();
 	inline void popChildFront();
-
+	// Update functions
+	void changeResolution(unsigned width, unsigned height) override;
 };
 
 // inline functions
