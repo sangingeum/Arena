@@ -25,6 +25,7 @@ protected:
 	UIAnchorType m_anchorType{ UIAnchorType::leftTop };
 	bool m_hidden{ false };
 	bool m_hot{ false };
+	bool m_focus{ true };
 public:
 	UINode(const sf::Transform& transform = sf::Transform::Identity)
 		: m_transform(transform)
@@ -33,7 +34,7 @@ public:
 	// Primary functions
 	virtual	void render(sf::RenderWindow& window, sf::Transform transform = sf::Transform::Identity) = 0;
 	virtual	bool mouseClick(ActionArgument args) = 0;
-	virtual	void mouseMove(ActionArgument args) = 0;
+	virtual	bool mouseMove(ActionArgument args, bool handled) = 0;
 	// Update functions
 	virtual	void translate(float x, float y) {
 		m_transform.translate(x, y);
@@ -50,11 +51,11 @@ public:
 	inline void setHidden(bool hide) {
 		m_hidden = hide;
 	}
-	inline void setHot(bool hot) {
-		m_hot = hot;
-	}
 	inline bool getHidden() {
 		return m_hidden;
+	}
+	inline void setHot(bool hot) {
+		m_hot = hot;
 	}
 	inline bool getHot() {
 		return m_hot;
@@ -69,6 +70,16 @@ public:
 		m_anchor.x = std::clamp(x, 0.0f, 1.0f);
 		m_anchor.y = std::clamp(y, 0.0f, 1.0f);
 	}
+	inline sf::Vector2f getAnchor() {
+		return m_anchor;
+	}
+	inline void setFocus(bool focus) {
+		m_focus = focus;
+	}
+	inline bool getFocus() {
+		return m_focus;
+	}
+
 protected:
 	sf::Transform getAnchorTransform() const {
 		auto transform = sf::Transform::Identity;

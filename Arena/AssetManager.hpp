@@ -9,25 +9,35 @@ enum class TextureID {
 	list
 };
 
+
+// Singleton Asset Manager
 class AssetManager
 {
 private:
 	std::unordered_map<TextureID, std::unique_ptr<sf::Texture>> m_textureMap;
 	std::unordered_map<TextureID, std::string> m_texturePathMap;
-public:
 	AssetManager() {
 		init();
 	}
-	sf::Texture& getTexture(TextureID id) {
-		if (m_textureMap.find(id) == m_textureMap.end()) {
-			m_textureMap[id] = std::make_unique<sf::Texture>();
-			m_textureMap[id]->loadFromFile(m_texturePathMap[id]);
-			m_textureMap[id]->setSmooth(true);
+	AssetManager(AssetManager&) = delete;
+	AssetManager& operator=(AssetManager&) = delete;
+public:
+
+	inline static AssetManager& instance() {
+		static AssetManager manager;
+		return manager;
+	}
+	static sf::Texture& getTexture(TextureID id) {
+		auto& textureMap = instance().m_textureMap;
+		auto& texturePathMap = instance().m_texturePathMap;
+		if (textureMap.find(id) == textureMap.end()) {
+			textureMap[id] = std::make_unique<sf::Texture>();
+			textureMap[id]->loadFromFile(texturePathMap[id]);
+			textureMap[id]->setSmooth(true);
 		}
-		return *m_textureMap[id];
+		return *textureMap[id];
 	}
 private:
-
 	void init() {
 		m_texturePathMap[TextureID::button] = "asset/image/craftpix/button.png";
 		m_texturePathMap[TextureID::list] = "asset/image/craftpix/list.png";

@@ -3,6 +3,8 @@
 #include "UILeaf.hpp"
 
 // Root UI node
+// Nodes at the back will be visible on top of nodes at the front.
+// Therefore, when handling mouse inputs, nodes at the back take higher priority.
 class UIGraph : public UIInternalNode
 {
 protected:
@@ -27,19 +29,25 @@ public:
 		auto [pressed, x, y] = args;
 		if (!pressed)
 			return false;
-		for (auto& child : m_children) {
-			if (child->mouseClick({ pressed, x, y })) {
+		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child) {
+			if ((*child)->mouseClick({ pressed, x, y })) {
+				if ((*child)->getFocus()) {
+					auto poppedChild = std::move(*child);
+					m_children.erase(std::next(child).base());
+					addChildBack(std::move(poppedChild));
+				}
 				return true;
 			}
 		}
 		return false;
 	}
 
-	void mouseMove(ActionArgument args) override {
+	bool mouseMove(ActionArgument args, bool handled = false) override {
 		auto [_, x, y] = args;
-		for (auto& child : m_children) {
-			child->mouseMove({ _, x, y });
+		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child) {
+			handled |= (*child)->mouseMove({ _, x, y }, handled);
 		}
+		return handled;
 	}
 
 	void translate(float x, float y) override {

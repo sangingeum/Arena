@@ -7,6 +7,7 @@
 #include "UIGraph.hpp"
 #include "AssetManager.hpp"
 #include <iostream>
+#include "UIFactory.hpp"
 
 class SceneMenu : public Scene
 {
@@ -14,7 +15,6 @@ class SceneMenu : public Scene
 	BaseGameSystem& m_gameSystem;
 	Config& m_config{ Config::instance() };
 	UIGraph m_uigraph{};
-	AssetManager m_assetManager;
 public:
 	SceneMenu(BaseGameSystem& gameSystem)
 		: m_gameSystem(gameSystem)
@@ -91,26 +91,9 @@ public:
 	}
 private:
 	void init() {
-		auto mainBar = std::make_unique<UIInternalNode>();
-
-		mainBar->getSprite().setTexture(m_assetManager.getTexture(TextureID::list));
-		mainBar->getSprite().setTextureRect({ 0, 0, 111, 231 });
-		mainBar->getSprite().setScale(3.f, 2.f);
-		mainBar->setAnchor(0.5f, 0.9f);
-		mainBar->setAnchorType(UIAnchorType::midBottom);
-
-
-		for (int i = 0; i < 3; ++i) {
-			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 66.5f, 0, 1, 100.f + 100.f * i, 0, 0, 1));
-			nodePtr->getSprite().setTexture(m_assetManager.getTexture(TextureID::button));
-			nodePtr->getSprite().setTextureRect({ 0, 0, 200, 48 });
-			nodePtr->setOnClickHandler([&]() {m_gameSystem.changeScene(SceneID::play, true, true); });
-			mainBar->addChild(std::move(nodePtr));
-		}
-
-		m_uigraph.addChild(std::move(mainBar));
+		m_uigraph.addChildBack(UIFactory::createMainMenu(m_gameSystem));
+		m_uigraph.addChildBack(UIFactory::createSettingMenu(m_gameSystem));
 		m_uigraph.changeResolution(m_config.windowWidth, m_config.widowHeight);
-
 	}
 
 };
