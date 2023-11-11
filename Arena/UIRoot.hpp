@@ -5,12 +5,12 @@
 // Root UI node
 // Nodes at the back will be visible on top of nodes at the front.
 // Therefore, when handling mouse inputs, nodes at the back take higher priority.
-class UIGraph : public UIInternalNode
+class UIRoot : public UIInternalNode
 {
 protected:
 	sf::View m_screenView;
 public:
-	UIGraph()
+	UIRoot()
 		: UIInternalNode(sf::Transform::Identity)
 	{}
 

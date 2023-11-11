@@ -172,7 +172,7 @@
     <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
     <ClCompile Include="UIFactory.cpp" />
-    <ClCompile Include="UIGraph.cpp" />
+    <ClCompile Include="UIRoot.cpp" />
     <ClCompile Include="UIInternalNode.cpp" />
     <ClCompile Include="UILeaf.cpp" />
     <ClCompile Include="UINode.cpp" />
@@ -192,7 +192,7 @@
     <ClInclude Include="SceneMenu.hpp" />
     <ClInclude Include="ScenePlay.hpp" />
     <ClInclude Include="UIFactory.hpp" />
-    <ClInclude Include="UIGraph.hpp" />
+    <ClInclude Include="UIRoot.hpp" />
     <ClInclude Include="UIInternalNode.hpp" />
     <ClInclude Include="UILeaf.hpp" />
     <ClInclude Include="UINode.hpp" />

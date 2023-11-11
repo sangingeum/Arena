@@ -3,7 +3,7 @@
 #include <functional>
 #include "Action.hpp"
 
-// m_transform must do only translations since the order of multiplications could change.
+
 enum class UIAnchorType {
 	leftTop,
 	midTop,
@@ -19,13 +19,13 @@ enum class UIAnchorType {
 class UINode
 {
 protected:
-	sf::Transform m_transform;
+	sf::Transform m_transform; // m_transform must do only translations since the order of multiplications could change.
 	sf::Vector2f m_anchor{ 0.f, 0.f };
 	sf::Sprite m_sprite{};
 	UIAnchorType m_anchorType{ UIAnchorType::leftTop };
-	bool m_hidden{ false };
-	bool m_hot{ false };
-	bool m_focus{ true };
+	bool m_hidden{ false }; // Whether the node is hidden
+	bool m_hot{ false }; // Whether mouse is hovering on the node
+	bool m_focus{ true }; // Whether the node should be placed front when clicked
 public:
 	UINode(const sf::Transform& transform = sf::Transform::Identity)
 		: m_transform(transform)

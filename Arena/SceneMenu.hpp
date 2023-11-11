@@ -4,17 +4,17 @@
 #include "Component.hpp"
 #include "Config.hpp"
 #include "EntityCreator.hpp"
-#include "UIGraph.hpp"
+#include "UIRoot.hpp"
 #include "AssetManager.hpp"
 #include <iostream>
 #include "UIFactory.hpp"
 
 class SceneMenu : public Scene
 {
-	entt::registry m_registry{};
 	BaseGameSystem& m_gameSystem;
+	entt::registry m_registry{};
 	Config& m_config{ Config::instance() };
-	UIGraph m_uigraph{};
+	UIRoot m_UIRoot{};
 public:
 	SceneMenu(BaseGameSystem& gameSystem)
 		: m_gameSystem(gameSystem)
@@ -28,8 +28,8 @@ public:
 		m_registry.view<CText, CTransform>().each([&](const entt::entity entiy, CText& cText, CTransform& cTransform) {
 			window.draw(cText.text, cTransform.transform);
 			});
-		if (!m_uigraph.getHidden())
-			m_uigraph.render(window);
+		if (!m_UIRoot.getHidden())
+			m_UIRoot.render(window);
 	}
 	void sUpdate() override {
 	}
@@ -51,22 +51,22 @@ public:
 		}
 		case ActionID::mousePrimary:
 			// UI click
-			m_uigraph.mouseClick(std::move(action.args));
+			m_UIRoot.mouseClick(std::move(action.args));
 			// Screen click
 			break;
 		case ActionID::mouseMove:
-			m_uigraph.mouseMove(std::move(action.args));
+			m_UIRoot.mouseMove(std::move(action.args));
 			break;
 		case ActionID::number2: {
 			m_gameSystem.changeScene(SceneID::play, true, true);
 			break;
 		}
 		case ActionID::characterMoveUp: {
-			m_uigraph.setHidden(false);
+			m_UIRoot.setHidden(false);
 			break;
 		}
 		case ActionID::characterMoveDown: {
-			m_uigraph.setHidden(true);
+			m_UIRoot.setHidden(true);
 			break;
 		}
 		case ActionID::number4: {
@@ -84,16 +84,16 @@ public:
 
 	// It will be called by the game system
 	void changeResolution(unsigned width, unsigned height) override {
-		m_uigraph.changeResolution(width, height);
+		m_UIRoot.changeResolution(width, height);
 	}
 	void adjustView(sf::RenderWindow& window) override {
 		window.setView(sf::View{ sf::FloatRect{0.f, 0.f, 12.8f, 7.2f} });
 	}
 private:
 	void init() {
-		m_uigraph.addChildBack(UIFactory::createMainMenu(m_gameSystem));
-		m_uigraph.addChildBack(UIFactory::createSettingMenu(m_gameSystem));
-		m_uigraph.changeResolution(m_config.windowWidth, m_config.widowHeight);
+		m_UIRoot.addChildBack(UIFactory::createMainMenu(m_gameSystem));
+		m_UIRoot.addChildBack(UIFactory::createSettingMenu(m_gameSystem));
+		m_UIRoot.changeResolution(m_config.windowWidth, m_config.widowHeight);
 	}
 
 };
