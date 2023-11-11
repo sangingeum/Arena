@@ -1,7 +1,7 @@
 #pragma once
-#include <entt.hpp>
-#include <box2d/box2d.h>
 #include "Component.hpp"
+#include <box2d/box2d.h>
+#include <entt.hpp>
 
 class EntityCreator
 {

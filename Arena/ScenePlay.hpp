@@ -1,8 +1,5 @@
 #pragma once
-#include "Scene.hpp"
 #include "BaseGameSystem.hpp"
-#include "Component.hpp"
-#include "Config.hpp"
 #include "ContactListener.hpp"
 #include "EntityCreator.hpp"
 

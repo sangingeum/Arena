@@ -9,66 +9,30 @@ protected:
 	std::function<void()> m_onColdHandler{ []() {} };
 	std::function<void()> m_onClickHandler{ []() {} };
 public:
-	UILeaf(const sf::Transform& transform = sf::Transform::Identity)
-		: UINode(transform)
-	{
-		setOnHotHandler([&]() {m_sprite.setColor(sf::Color::Yellow); });
-		setOnColdHandler([&]() {m_sprite.setColor(sf::Color::White); });
-		setOnClickHandler([&]() {m_sprite.setColor(sf::Color::Yellow); });
-	}
-
-	void render(sf::RenderWindow& window, sf::Transform transform) override {
-		if (getHidden())
-			return;
-		auto finalTransform = transform * getTransform();
-		window.draw(m_sprite, finalTransform);
-	}
-
-	bool mouseClick(ActionArgument args) override {
-		if (getHidden())
-			return false;
-		auto [pressed, x, y] = args;
-		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
-		x = transformedPoint.x;
-		y = transformedPoint.y;
-		if (m_sprite.getGlobalBounds().contains({ x, y })) {
-			onClick();
-			return true;
-		}
-		return false;
-	}
-
-	bool mouseMove(ActionArgument args, bool handled) override {
-		if (getHidden())
-			return false;
-		auto [_, x, y] = args;
-		auto transformedPoint = getTransform().getInverse().transformPoint({ x, y });
-		x = transformedPoint.x;
-		y = transformedPoint.y;
-		if (!handled && m_sprite.getGlobalBounds().contains({ x, y })) {
-			setHot(true);
-			onHot();
-			return true;
-		}
-		else if (getHot()) {
-			setHot(false);
-			onCold();
-		}
-		return false;
-	}
-
+	UILeaf(const sf::Transform& transform = sf::Transform::Identity);
+	// Primary functions
+	void render(sf::RenderWindow& window, sf::Transform transform) override;
+	bool mouseClick(ActionArgument args) override;
+	bool mouseMove(ActionArgument args, bool handled) override;
 	// Event handlers
-	inline void setOnHotHandler(std::function<void()> handler) {
-		m_onHotHandler = std::move(handler);
-	}
-	inline void setOnColdHandler(std::function<void()> handler) {
-		m_onColdHandler = std::move(handler);
-	}
-	inline void setOnClickHandler(std::function<void()> handler) {
-		m_onClickHandler = std::move(handler);
-	}
-	virtual void onHot() { m_onHotHandler(); }
-	virtual void onCold() { m_onColdHandler(); }
-	virtual void onClick() { m_onClickHandler(); }
+	inline void setOnHotHandler(std::function<void()> handler);
+	inline void setOnColdHandler(std::function<void()> handler);
+	inline void setOnClickHandler(std::function<void()> handler);
+	virtual void onHot();
+	virtual void onCold();
+	virtual void onClick();
 };
 
+// inline functions
+
+void UILeaf::setOnHotHandler(std::function<void()> handler) {
+	m_onHotHandler = std::move(handler);
+}
+
+void UILeaf::setOnColdHandler(std::function<void()> handler) {
+	m_onColdHandler = std::move(handler);
+}
+
+void UILeaf::setOnClickHandler(std::function<void()> handler) {
+	m_onClickHandler = std::move(handler);
+}

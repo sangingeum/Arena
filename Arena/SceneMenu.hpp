@@ -1,13 +1,7 @@
 #pragma once
-#include "Scene.hpp"
-#include "BaseGameSystem.hpp"
 #include "Component.hpp"
-#include "Config.hpp"
-#include "EntityCreator.hpp"
-#include "UIRoot.hpp"
-#include "AssetManager.hpp"
-#include <iostream>
 #include "UIFactory.hpp"
+
 
 class SceneMenu : public Scene
 {

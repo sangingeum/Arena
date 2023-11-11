@@ -3,7 +3,6 @@
 #include <functional>
 #include "Action.hpp"
 
-
 enum class UIAnchorType {
 	leftTop,
 	midTop,
@@ -28,101 +27,84 @@ protected:
 	bool m_focus{ true }; // Whether the node should be placed front when clicked
 	bool m_draggable{ true }; // Whether the node can be dragged
 public:
-	UINode(const sf::Transform& transform = sf::Transform::Identity)
-		: m_transform(transform)
-	{}
+	UINode(const sf::Transform& transform = sf::Transform::Identity);
 	virtual ~UINode() = default;
 	// Primary functions
 	virtual	void render(sf::RenderWindow& window, sf::Transform transform = sf::Transform::Identity) = 0;
 	virtual	bool mouseClick(ActionArgument args) = 0;
 	virtual	bool mouseMove(ActionArgument args, bool handled) = 0;
 	// Update functions
-	virtual	void translate(float x, float y) {
-		m_transform.translate(x, y);
-	}
-	virtual	void changeResolution(unsigned width, unsigned height) {
-		auto transform = getAnchorTransform();
-		transform.translate(m_anchor.x * width, m_anchor.y * height);
-		m_transform = std::move(transform);
-	}
-	virtual	void setAnchorType(UIAnchorType type) {
-		m_anchorType = type;
-	}
+	virtual	void translate(float x, float y);
+	virtual	void changeResolution(unsigned width, unsigned height);
 	// getter & setter
-	inline void setHidden(bool hide) {
-		m_hidden = hide;
-	}
-	inline bool getHidden() {
-		return m_hidden;
-	}
-	inline void setHot(bool hot) {
-		m_hot = hot;
-	}
-	inline bool getHot() {
-		return m_hot;
-	}
-	inline sf::Transform& getTransform() {
-		return m_transform;
-	}
-	inline sf::Sprite& getSprite() {
-		return m_sprite;
-	}
-	inline void setAnchor(float x, float y) {
-		m_anchor.x = std::clamp(x, 0.0f, 1.0f);
-		m_anchor.y = std::clamp(y, 0.0f, 1.0f);
-	}
-	inline sf::Vector2f getAnchor() {
-		return m_anchor;
-	}
-	inline void setFocus(bool focus) {
-		m_focus = focus;
-	}
-	inline bool getFocus() {
-		return m_focus;
-	}
-	inline void setDraggable(bool draggable) {
-		m_draggable = draggable;
-	}
-	inline bool getDraggable() {
-		return m_draggable;
-	}
+	inline void setAnchorType(UIAnchorType type);
+	inline void setHidden(bool hide);
+	inline bool getHidden();
+	inline void setHot(bool hot);
+	inline bool getHot();
+	inline sf::Transform& getTransform();
+	inline sf::Sprite& getSprite();
+	inline void setAnchor(float x, float y);
+	inline sf::Vector2f getAnchor();
+	inline void setFocus(bool focus);
+	inline bool getFocus();
+	inline void setDraggable(bool draggable);
+	inline bool getDraggable();
 protected:
-	sf::Transform getAnchorTransform() const {
-		auto transform = sf::Transform::Identity;
-		auto size = m_sprite.getGlobalBounds().getSize();
-		switch (m_anchorType)
-		{
-		case UIAnchorType::leftTop:
-			// sfml default
-			break;
-		case UIAnchorType::midTop:
-			transform.translate(-size.x / 2.f, 0);
-			break;
-		case UIAnchorType::rightTop:
-			transform.translate(-size.x, 0);
-			break;
-		case UIAnchorType::leftMid:
-			transform.translate(0, -size.y / 2.f);
-			break;
-		case UIAnchorType::center:
-			transform.translate(-size.x / 2.f, -size.y / 2.f);
-			break;
-		case UIAnchorType::rightMid:
-			transform.translate(-size.x, -size.y / 2.f);
-			break;
-		case UIAnchorType::leftBottom:
-			transform.translate(0, -size.y);
-			break;
-		case UIAnchorType::midBottom:
-			transform.translate(-size.x / 2.f, -size.y);
-			break;
-		case UIAnchorType::rightBottom:
-			transform.translate(-size.x, -size.y);
-			break;
-		default:
-			break;
-		}
-		return transform;
-	}
+	sf::Transform getAnchorTransform() const;
 };
 
+// inline functions
+
+void UINode::setAnchorType(UIAnchorType type) {
+	m_anchorType = type;
+}
+
+void UINode::setHidden(bool hide) {
+	m_hidden = hide;
+}
+
+bool UINode::getHidden() {
+	return m_hidden;
+}
+
+void UINode::setHot(bool hot) {
+	m_hot = hot;
+}
+
+bool UINode::getHot() {
+	return m_hot;
+}
+
+sf::Transform& UINode::getTransform() {
+	return m_transform;
+}
+
+sf::Sprite& UINode::getSprite() {
+	return m_sprite;
+}
+
+void UINode::setAnchor(float x, float y) {
+	m_anchor.x = std::clamp(x, 0.0f, 1.0f);
+	m_anchor.y = std::clamp(y, 0.0f, 1.0f);
+}
+
+sf::Vector2f UINode::getAnchor() {
+	return m_anchor;
+}
+
+void UINode::setFocus(bool focus) {
+	m_focus = focus;
+}
+
+bool UINode::getFocus() {
+	return m_focus;
+}
+
+void UINode::setDraggable(bool draggable) {
+	m_draggable = draggable;
+}
+
+bool UINode::getDraggable() {
+	return m_draggable;
+}

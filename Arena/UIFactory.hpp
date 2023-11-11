@@ -1,5 +1,6 @@
 #pragma once
 #include "UIRoot.hpp"
+#include "UILeaf.hpp"
 #include "AssetManager.hpp"
 #include "BaseGameSystem.hpp"
 
@@ -31,10 +32,10 @@ public:
 		menu->setAnchor(0.5f, 0.5f);
 		menu->setAnchorType(UIAnchorType::center);
 		for (int i = 0; i < 3; ++i) {
-			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 66.5f, 0, 1, 100.f + 100.f * i, 0, 0, 1));
+			auto nodePtr = std::make_unique<UILeaf>(sf::Transform(1, 0, 177.5f, 0, 1, 100.f + 100.f * i, 0, 0, 1));
 			nodePtr->getSprite().setTexture(AssetManager::getTexture(TextureID::button));
 			nodePtr->getSprite().setTextureRect({ 0, 0, 200, 48 });
-			nodePtr->setOnClickHandler([&]() {gameSystem.changeScene(SceneID::play, true, true); });
+			nodePtr->setOnClickHandler([&]() { gameSystem.changeResolution(1920, 1080); });
 			menu->addChildBack(std::move(nodePtr));
 		}
 		return std::move(menu);

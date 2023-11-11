@@ -1,7 +1,7 @@
 #pragma once
+#include "Component.hpp"
 #include <box2d/box2d.h>
 #include <entt.hpp>
-#include "Component.hpp"
 
 class ContactListenerWhiteGreen : public b2ContactListener {
 	entt::registry& m_registry;
