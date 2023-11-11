@@ -1,7 +1,7 @@
 #include "GameSystem.hpp"
 
 GameSystem::GameSystem()
-	: m_config(Config::instance()), m_window(sf::VideoMode(m_config.windowWidth, m_config.widowHeight), m_config.windowName, sf::Style::Titlebar | sf::Style::Close)
+	: m_config(Config::instance()), m_window(sf::VideoMode(m_config.windowWidth, m_config.windowHeight), m_config.windowName, sf::Style::Titlebar | sf::Style::Close)
 {
 	init();
 }

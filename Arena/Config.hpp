@@ -10,6 +10,7 @@ class Config
 		changeResolution(1280, 720);
 		if (!font.loadFromFile("asset/font/PlaypenSans-Medium.ttf"))
 			throw std::runtime_error("Failed to load font file: font/PlaypenSans-Medium.ttf");
+		font.setSmooth(true);
 	}
 	Config(const Config&) = delete;
 	void operator=(const Config&) = delete;
@@ -20,21 +21,21 @@ public:
 		static Config config;
 		return config;
 	}
-	void changeResolution(unsigned windowWidth_, unsigned widowHeight_) {
+	void changeResolution(unsigned windowWidth_, unsigned windowHeight_) {
 		windowWidth = windowWidth_;
-		widowHeight = widowHeight_;
+		windowHeight = windowHeight_;
 		halfWindowWidth = windowWidth / 2.f;
-		halfWindowHeight = widowHeight / 2.f;
+		halfWindowHeight = windowHeight / 2.f;
 	}
 
 	sf::Font font;
 	uint32_t frameRate{ 60 };
 	unsigned windowWidth{ 1280 };
-	unsigned widowHeight{ 720 };
+	unsigned windowHeight{ 720 };
 	float halfWindowWidth;
 	float halfWindowHeight;
-	int32 velocityIterations{ 16 };
-	int32 positionIterations{ 6 };
+	uint32_t velocityIterations{ 16 };
+	uint32_t positionIterations{ 6 };
 	const float pi{ 3.14159265358979323846f };
 	const float radianToDegree{ 57.2958f };
 	sf::String windowName{ "Arena" };

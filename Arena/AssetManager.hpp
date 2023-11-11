@@ -4,8 +4,10 @@
 
 enum class TextureID {
 	nothing,
+	blank,
 	button,
-	list
+	list,
+
 };
 
 
@@ -40,6 +42,7 @@ private:
 	void init() {
 		m_texturePathMap[TextureID::button] = "asset/image/craftpix/button.png";
 		m_texturePathMap[TextureID::list] = "asset/image/craftpix/list.png";
+		m_texturePathMap[TextureID::blank] = "asset/image/blank.PNG";
 
 	}
 };

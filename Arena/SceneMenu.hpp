@@ -86,8 +86,8 @@ public:
 private:
 	void init() {
 		m_UIRoot.addChildBack(UIFactory::createMainMenu(m_gameSystem));
-		m_UIRoot.addChildBack(UIFactory::createSettingMenu(m_gameSystem));
-		m_UIRoot.changeResolution(m_config.windowWidth, m_config.widowHeight);
+		m_UIRoot.addChildBack(UIFactory::createSettingMenu(m_gameSystem, m_UIRoot));
+		m_UIRoot.changeResolution(m_config.windowWidth, m_config.windowHeight);
 	}
 
 };
