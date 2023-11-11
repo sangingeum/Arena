@@ -75,6 +75,7 @@
     <ClCompile Include="UIFactory.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\Temp\tmp3FA7.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScenePlay.hpp">

@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\AppData\Local\Temp\tmp3FA7.cpp" />
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="ActionBinder.cpp" />
     <ClCompile Include="AssetManager.cpp" />
