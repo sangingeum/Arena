@@ -4,10 +4,21 @@
 
 enum class TextureID {
 	nothing,
+	// UI
 	blank,
 	button,
 	list,
-
+	// Shinobi
+	Shinobi_Attack_1,
+	Shinobi_Attack_2,
+	Shinobi_Attack_3,
+	Shinobi_Dead,
+	Shinobi_Hurt,
+	Shinobi_Idle,
+	Shinobi_Jump,
+	Shinobi_Run,
+	Shinobi_Shield,
+	Shinobi_Walk,
 };
 
 
