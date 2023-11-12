@@ -54,7 +54,7 @@
     <ClCompile Include="ContactListener.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="EntityCreator.cpp">
+    <ClCompile Include="EntityFactory.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="UINode.cpp">
@@ -110,7 +110,7 @@
     <ClInclude Include="ContactListener.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="EntityCreator.hpp">
+    <ClInclude Include="EntityFactory.hpp">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="UINode.hpp">
