@@ -13,7 +13,7 @@ public:
 	void BeginContact(b2Contact* contact) override {
 		for (auto* fixture : { contact->GetFixtureA() , contact->GetFixtureB() }) {
 			entt::entity entity = (entt::entity)fixture->GetBody()->GetUserData().pointer;
-			auto& cPhysics = m_registry.get<CPhysics>(entity);
+			auto& cPhysics = m_registry.get<CCollision>(entity);
 			auto& cRenderable = m_registry.get<CRenderable>(entity);
 			++cPhysics.numContacts;
 			cRenderable.shape.setFillColor(sf::Color::Green);
@@ -23,7 +23,7 @@ public:
 	void EndContact(b2Contact* contact) override {
 		for (auto* fixture : { contact->GetFixtureA() , contact->GetFixtureB() }) {
 			entt::entity entity = (entt::entity)fixture->GetBody()->GetUserData().pointer;
-			auto& cPhysics = m_registry.get<CPhysics>(entity);
+			auto& cPhysics = m_registry.get<CCollision>(entity);
 			auto& cRenderable = m_registry.get<CRenderable>(entity);
 			--cPhysics.numContacts;
 			if (!cPhysics.numContacts)

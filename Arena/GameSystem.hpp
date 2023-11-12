@@ -25,6 +25,7 @@ private:
 	inline std::shared_ptr<Scene> getCurrentScene();
 	// Game loop functions
 	void sUpdate();
+	void sAnimation(float timeStep);
 	void sHandleInput();
 	void sPhysics(float timeStep);
 	void sRender();

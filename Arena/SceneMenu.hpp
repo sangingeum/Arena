@@ -28,6 +28,9 @@ public:
 	void sUpdate() override {
 		m_UIRoot.update(m_config.windowWidth, m_config.windowHeight);
 	}
+	void sAnimation(float timeStep) override {
+
+	}
 	void sPhysics(float timeStep) override {
 	}
 	void sHandleAction(sf::RenderWindow& window, Action action) override {

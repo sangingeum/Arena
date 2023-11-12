@@ -13,6 +13,7 @@ void GameSystem::run() {
 		if (!m_pause) {
 			sUpdate();
 			sPhysics(timeStep);
+			sAnimation(timeStep);
 		}
 		sHandleInput();
 		sRender();
@@ -57,6 +58,11 @@ void GameSystem::init() {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(m_config.frameRate);
 	changeScene(SceneID::mainMenu, false, true);
+}
+
+void GameSystem::sAnimation(float timeStep)
+{
+	getCurrentScene()->sAnimation(timeStep);
 }
 
 void GameSystem::sUpdate() {
