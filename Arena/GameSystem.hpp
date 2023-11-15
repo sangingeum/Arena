@@ -18,6 +18,7 @@ public:
 	void quit() override;
 	void pause() override;
 	void unpause() override;
+	bool getPaused() override;
 	void changeScene(SceneID id, bool destroyCurrentScene, bool overwriteIfExists) override;
 	void changeResolution(unsigned width = 1280, unsigned height = 720) override;
 private:

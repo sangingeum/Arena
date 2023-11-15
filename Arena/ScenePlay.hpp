@@ -44,6 +44,47 @@ public:
 	}
 	void sUpdate() override {
 
+		m_registry.view<CPlayerInput, CState, CCollision>().each([](const entt::entity entiy, CPlayerInput& cPlayerInput, CState& cState, CCollision& cCollision) {
+			// Set player velocity
+			b2Vec2 vel{ 0, cCollision.body->GetLinearVelocity().y };
+			if (cPlayerInput.moveLeft)
+				vel.x = -4;
+			if (cPlayerInput.moveRight)
+				if (cPlayerInput.moveLeft)
+					vel.x = 0;
+				else
+					vel.x = 4;
+			if (cPlayerInput.jump) {
+				vel.y = -5;
+			}
+			cCollision.body->SetLinearVelocity(vel);
+			// Change state
+			if (std::abs(vel.y) >= 0.1f) {
+				cState.nextID = StateID::Jump;
+			}
+			else {
+				cState.nextID = StateID::Idle;
+			}
+			});
+		// Update state & Change state animation
+		m_registry.view<CState, CAnimation>().each([&](const entt::entity entiy, CState& cState, CAnimation& cAnimation) {
+			if (cState.curID != cState.nextID) {
+				cState.curID = cState.nextID;
+				switch (cState.curID)
+				{
+				case StateID::Idle:
+					m_registry.replace<CAnimation>(entiy, ShinobiAnimation::getIdle());
+					break;
+				case StateID::Jump:
+					m_registry.replace<CAnimation>(entiy, ShinobiAnimation::getJump());
+					break;
+				default:
+					break;
+				}
+			}
+			});
+
+
 	}
 	void sAnimation(float timeStep) override {
 		m_registry.view<CAnimation>().each([timeStep](const entt::entity entiy, CAnimation& cAnimation) {
@@ -56,6 +97,17 @@ public:
 	void sHandleAction(sf::RenderWindow& window, Action action) override {
 		switch (action.id)
 		{
+		case ActionID::characterMoveUp:
+		case ActionID::characterMoveDown:
+		case ActionID::characterMoveLeft:
+		case ActionID::characterMoveRight:
+		case ActionID::characterJump: {
+			auto [pressed, x, y] = action.args;
+			m_registry.view<CPlayerInput>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput) {
+				cPlayerInput.handleAction(action.id, pressed);
+				});
+			break;
+		}
 		case ActionID::cameraZoom:
 		{
 			auto [flag, zoom, y] = action.args;
@@ -75,7 +127,6 @@ public:
 				auto entity = m_registry.create();
 				m_registry.emplace<CCollision>(entity, m_world, entity, 0.5f, 0.5f, worldPos.x, worldPos.y);
 				m_registry.emplace<CRenderable>(entity, 0.5f, 0.5f);
-				//std::cout << worldPos.x << ", " << worldPos.y << "\n";
 			}
 			break;
 		}
@@ -99,6 +150,13 @@ public:
 			m_gameSystem.changeResolution(1920, 1080);
 			break;
 		}
+		case ActionID::pause: {
+			if (m_gameSystem.getPaused())
+				m_gameSystem.unpause();
+			else
+				m_gameSystem.pause();
+			break;
+		}
 		default:
 			break;
 		}
@@ -115,7 +173,7 @@ private:
 		float ratio = 0.01f;
 		// Boundary boxes
 		EntityFactory::createPhysicalBox(m_registry, m_world, 5000.f, 0.1f, 0, 0, b2BodyType::b2_staticBody);
-		EntityFactory::createShinobi(m_registry, m_world, 1.5f, 1.5f, 3.f, -2.f);
+		EntityFactory::createShinobi(m_registry, m_world, 3.f, -2.f);
 	}
 
 };

@@ -22,6 +22,12 @@
     <Filter Include="Asset">
       <UniqueIdentifier>{6927362d-f8e8-4452-b3d4-ee8f1fce2923}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{1b54d009-b047-42f0-91ef-dab57a698090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character">
+      <UniqueIdentifier>{915a03a4-ec78-496e-b502-6a8a9c9bed11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,6 +80,15 @@
     </ClCompile>
     <ClCompile Include="UIFactory.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="ShinobiAnimation.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterData.cpp">
+      <Filter>Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +145,15 @@
     </ClInclude>
     <ClInclude Include="UIFactory.hpp">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="State.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="ShinobiAnimation.hpp">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterData.hpp">
+      <Filter>Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

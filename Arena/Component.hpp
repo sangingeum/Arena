@@ -3,6 +3,7 @@
 #include <box2d/box2d.h>
 #include <entt.hpp>
 #include <SFML/Graphics.hpp>
+#include "State.hpp"
 
 struct CTransform
 {
@@ -75,27 +76,71 @@ struct CCollision
 {
 	b2Body* body;
 	uint32_t numContacts{ 0 };
-	CCollision(b2World& world, entt::entity entity, float halfWidth, float halfHeight, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody, float xVel = 0.f, float yVel = 0.f)
+	CCollision(b2World& world, entt::entity entity, float halfWidth, float halfHeight, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody, float xVel = 0.f, float yVel = 0.f,
+		float friction = 0.4f, float restitution = 0.3f, float density = 1.0f, bool fixedRotation = false)
 	{
 		b2BodyDef def;
 		def.position.Set(xPos, yPos);
 		def.type = type;
+		def.fixedRotation = fixedRotation;
 		body = world.CreateBody(&def);
 		b2PolygonShape boxShape;
 		boxShape.SetAsBox(halfWidth, halfHeight);
 		b2FixtureDef fDef;
 		fDef.shape = &boxShape;
-		fDef.friction = 0.4f;
-		fDef.density = 1.f;
-		fDef.restitution = 0.3f;
+		fDef.friction = friction;
+		fDef.restitution = restitution;
+		fDef.density = density;
+
 		body->CreateFixture(&fDef);
 		body->SetLinearVelocity({ xVel, yVel });
 		body->GetUserData().pointer = (uintptr_t)entity;
 	}
 };
 
+struct CState {
+	StateID curID{ StateID::Idle };
+	StateID nextID{ StateID::Idle };
+};
+
 struct CPlayerInput
 {
-	//states
+	bool moveUp{ false };
+	bool moveDown{ false };
+	bool moveLeft{ false };
+	bool moveRight{ false };
+	bool jump{ false };
+
+	void handleAction(ActionID id, bool pressed) {
+		switch (id)
+		{
+		case ActionID::characterMoveUp:
+			moveUp = pressed;
+			break;
+		case ActionID::characterMoveLeft:
+			moveLeft = pressed;
+			break;
+		case ActionID::characterMoveDown:
+			moveDown = pressed;
+			break;
+		case ActionID::characterMoveRight:
+			moveRight = pressed;
+			break;
+		case ActionID::characterJump:
+			jump = pressed;
+			break;
+		default:
+			break;
+		}
+	}
+
+	void reset() {
+		moveUp = false;
+		moveDown = false;
+		moveLeft = false;
+		moveRight = false;
+		jump = false;
+	}
+
 
 };

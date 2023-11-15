@@ -3,6 +3,7 @@
 #include <box2d/box2d.h>
 #include <entt.hpp>
 #include "AssetManager.hpp"
+#include "ShinobiAnimation.hpp"
 
 class EntityFactory
 {
@@ -21,10 +22,14 @@ public:
 		cTransform.transform.scale({ 0.01f, 0.01f });
 		return entity;
 	}
-	static entt::entity createShinobi(entt::registry& registry, b2World& world, float halfWidth, float halfHeight, float xPos, float yPos) {
+	static entt::entity createShinobi(entt::registry& registry, b2World& world, float xPos, float yPos) {
+		constexpr float halfWidth = CharacterData::getShinobiHalfWidth();
+		constexpr float halfHeight = CharacterData::getShinobiHalfHeight();
 		auto entity = registry.create();
-		auto& cAnimation = registry.emplace<CAnimation>(entity, AssetManager::getTexture(TextureID::Shinobi_Idle), sf::IntRect{ 0, 0, 128, 128 }, sf::Vector2f{ halfWidth * 2.f, halfHeight * 2.f }, 6, 3.f, sf::Vector2f{ 0.f, -halfHeight * 0.35f });
-		registry.emplace<CCollision>(entity, world, entity, halfWidth * 0.35f, halfHeight * 0.6f, xPos, yPos);
+		registry.emplace<CAnimation>(entity, ShinobiAnimation::getIdle());
+		registry.emplace<CCollision>(entity, world, entity, halfWidth * 0.35f, halfHeight * 0.6f, xPos, yPos, b2BodyType::b2_dynamicBody, 0.f, 0.f, 0.f, 0.f, 1.0f, true);
+		registry.emplace<CPlayerInput>(entity);
+		registry.emplace<CState>(entity);
 		return entity;
 	}
 };

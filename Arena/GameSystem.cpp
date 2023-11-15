@@ -10,12 +10,12 @@ void GameSystem::run() {
 	sf::Clock clock;
 	while (m_window.isOpen()) {
 		float timeStep = clock.restart().asSeconds();
+		sHandleInput();
 		if (!m_pause) {
 			sUpdate();
 			sPhysics(timeStep);
 			sAnimation(timeStep);
 		}
-		sHandleInput();
 		sRender();
 	}
 }
@@ -30,6 +30,11 @@ void GameSystem::pause() {
 
 void GameSystem::unpause() {
 	m_pause = false;
+}
+
+bool GameSystem::getPaused()
+{
+	return m_pause;
 }
 
 void GameSystem::changeScene(SceneID id, bool destroyCurrentScene, bool overwriteIfExists) {

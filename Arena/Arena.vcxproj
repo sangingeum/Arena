@@ -163,6 +163,7 @@
     <ClCompile Include="ActionBinder.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
+    <ClCompile Include="CharacterData.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="GameSystem.cpp" />
@@ -171,6 +172,8 @@
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
+    <ClCompile Include="ShinobiAnimation.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="UIFactory.cpp" />
     <ClCompile Include="UIRoot.cpp" />
     <ClCompile Include="UIInternalNode.cpp" />
@@ -182,6 +185,7 @@
     <ClInclude Include="ActionBinder.hpp" />
     <ClInclude Include="AssetManager.hpp" />
     <ClInclude Include="BaseGameSystem.hpp" />
+    <ClInclude Include="CharacterData.hpp" />
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="ContactListener.hpp" />
@@ -191,6 +195,8 @@
     <ClInclude Include="SceneLoader.hpp" />
     <ClInclude Include="SceneMenu.hpp" />
     <ClInclude Include="ScenePlay.hpp" />
+    <ClInclude Include="ShinobiAnimation.hpp" />
+    <ClInclude Include="State.hpp" />
     <ClInclude Include="UIFactory.hpp" />
     <ClInclude Include="UIRoot.hpp" />
     <ClInclude Include="UIInternalNode.hpp" />
