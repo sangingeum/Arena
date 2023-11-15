@@ -34,12 +34,12 @@ public:
 			t.translate({ pos.x, pos.y }).rotate(radian * radianToDegree);
 			window.draw(cRender.shape, t);
 			});
-		m_registry.view<CCollision, CAnimation>().each([&](const entt::entity entiy, CCollision& cPhysics, CAnimation& cAnimation) {
+		m_registry.view<CCollision, CAnimation, CPlayerInput>().each([&](const entt::entity entiy, CCollision& cPhysics, CAnimation& cAnimation, CPlayerInput& cPlayerInput) {
 			sf::Transform t;
 			auto& pos = cPhysics.body->GetPosition();
 			auto radian = cPhysics.body->GetAngle();
 			t.translate({ pos.x, pos.y }).rotate(radian * radianToDegree);
-			window.draw(cAnimation.sprite, t);
+			window.draw(cAnimation.sprite, t * cPlayerInput.direction);
 			});
 	}
 	void sUpdate() override {
@@ -83,7 +83,6 @@ public:
 				}
 			}
 			});
-
 
 	}
 	void sAnimation(float timeStep) override {

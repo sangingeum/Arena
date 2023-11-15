@@ -60,7 +60,6 @@ struct CAnimation {
 	{
 		sprite.setOrigin(sprite.getLocalBounds().getSize() / 2.f);
 		sprite.scale(targetWorldSize.x / width, targetWorldSize.y / height);
-		sprite.scale({ -1.f, 1.f });
 		sprite.move(positionOffset);
 	}
 	void updateFrame(float timeStep) {
@@ -107,6 +106,7 @@ struct CState {
 
 struct CPlayerInput
 {
+	sf::Transform direction{ sf::Transform::Identity };
 	bool moveUp{ false };
 	bool moveDown{ false };
 	bool moveLeft{ false };
@@ -121,12 +121,19 @@ struct CPlayerInput
 			break;
 		case ActionID::characterMoveLeft:
 			moveLeft = pressed;
+			if (pressed) {
+				auto t = sf::Transform::Identity;
+				direction = std::move(t.scale({ -1.f, 1.f }));
+			}
 			break;
 		case ActionID::characterMoveDown:
 			moveDown = pressed;
 			break;
 		case ActionID::characterMoveRight:
 			moveRight = pressed;
+			if (pressed) {
+				direction = sf::Transform::Identity;
+			}
 			break;
 		case ActionID::characterJump:
 			jump = pressed;
