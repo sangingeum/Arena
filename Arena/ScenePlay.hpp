@@ -127,6 +127,7 @@ public:
 				auto entity = m_registry.create();
 				m_registry.emplace<CCollision>(entity, m_world, entity, 0.5f, 0.5f, worldPos.x, worldPos.y);
 				m_registry.emplace<CRenderable>(entity, 0.5f, 0.5f);
+				std::cout << worldPos.x << ", " << worldPos.y << "\n";
 			}
 			break;
 		}
@@ -166,14 +167,14 @@ public:
 
 	}
 	void adjustView(sf::RenderWindow& window) override {
-		window.setView(sf::View{ sf::FloatRect{0.f, -6.2f, 12.8f, 7.2f} });
+		window.setView(sf::View{ sf::FloatRect{-6.4f, -5.2f, 12.8f, 7.2f} });
 	}
 private:
 	void init() {
 		float ratio = 0.01f;
 		// Boundary boxes
 		EntityFactory::createPhysicalBox(m_registry, m_world, 5000.f, 0.1f, 0, 0, b2BodyType::b2_staticBody);
-		EntityFactory::createShinobi(m_registry, m_world, 3.f, -2.f);
+		EntityFactory::createShinobi(m_registry, m_world, 0.f, -2.f);
 	}
 
 };

@@ -58,8 +58,10 @@ struct CAnimation {
 	CAnimation(sf::Texture& texture, sf::IntRect rect, sf::Vector2f targetWorldSize, uint32_t frameCount_, float animTime, sf::Vector2f positionOffset = { 0.f, 0.f })
 		:sprite(texture, rect), width(rect.width), height(rect.height), frameCount(frameCount_), timePerFrame(animTime / frameCount_)
 	{
-		sprite.setScale(targetWorldSize.x / width, targetWorldSize.y / height);
-		sprite.setPosition(-targetWorldSize / 2.f + positionOffset);
+		sprite.setOrigin(sprite.getLocalBounds().getSize() / 2.f);
+		sprite.scale(targetWorldSize.x / width, targetWorldSize.y / height);
+		sprite.scale({ -1.f, 1.f });
+		sprite.move(positionOffset);
 	}
 	void updateFrame(float timeStep) {
 		curFrameTime += std::min(timeStep, timePerFrame);

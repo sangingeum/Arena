@@ -26,7 +26,8 @@ public:
 		constexpr float halfWidth = CharacterData::getShinobiHalfWidth();
 		constexpr float halfHeight = CharacterData::getShinobiHalfHeight();
 		auto entity = registry.create();
-		registry.emplace<CAnimation>(entity, ShinobiAnimation::getIdle());
+		auto& anim = registry.emplace<CAnimation>(entity, ShinobiAnimation::getIdle());
+		//anim.sprite.getTextureRect();
 		registry.emplace<CCollision>(entity, world, entity, halfWidth * 0.35f, halfHeight * 0.6f, xPos, yPos, b2BodyType::b2_dynamicBody, 0.f, 0.f, 0.f, 0.f, 1.0f, true);
 		registry.emplace<CPlayerInput>(entity);
 		registry.emplace<CState>(entity);
