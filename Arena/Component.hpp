@@ -78,7 +78,7 @@ struct CCollision
 	b2Body* body;
 	uint32_t numContacts{ 0 };
 	CCollision(b2World& world, entt::entity entity, float halfWidth, float halfHeight, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody, float xVel = 0.f, float yVel = 0.f,
-		float friction = 0.4f, float restitution = 0.3f, float density = 1.0f, bool fixedRotation = false)
+		float friction = 0.4f, float restitution = 0.f, float density = 1.0f, bool fixedRotation = false)
 	{
 		b2BodyDef def;
 		def.position.Set(xPos, yPos);

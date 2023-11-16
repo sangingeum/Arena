@@ -164,7 +164,6 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
     <ClCompile Include="CharacterData.cpp" />
-    <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -191,12 +190,14 @@
     <ClInclude Include="ContactListener.hpp" />
     <ClInclude Include="EntityFactory.hpp" />
     <ClInclude Include="GameSystem.hpp" />
+    <ClInclude Include="RayCastCallback.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneLoader.hpp" />
     <ClInclude Include="SceneMenu.hpp" />
     <ClInclude Include="ScenePlay.hpp" />
     <ClInclude Include="ShinobiAnimation.hpp" />
     <ClInclude Include="State.hpp" />
+    <ClInclude Include="TSQueue.hpp" />
     <ClInclude Include="UIFactory.hpp" />
     <ClInclude Include="UIRoot.hpp" />
     <ClInclude Include="UIInternalNode.hpp" />

@@ -11,6 +11,7 @@ void GameSystem::run() {
 	while (m_window.isOpen()) {
 		float timeStep = clock.restart().asSeconds();
 		sHandleInput();
+		timeStep = std::min(timeStep, 0.05f);
 		if (!m_pause) {
 			sUpdate();
 			sPhysics(timeStep);

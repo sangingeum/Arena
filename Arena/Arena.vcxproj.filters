@@ -28,6 +28,9 @@
     <Filter Include="Character">
       <UniqueIdentifier>{915a03a4-ec78-496e-b502-6a8a9c9bed11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DataStructure">
+      <UniqueIdentifier>{bb20700d-647e-4034-ac85-df60989d9db9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -56,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="ActionBinder.cpp">
       <Filter>Action</Filter>
-    </ClCompile>
-    <ClCompile Include="ContactListener.cpp">
-      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="EntityFactory.cpp">
       <Filter>Common</Filter>
@@ -154,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="CharacterData.hpp">
       <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="TSQueue.hpp">
+      <Filter>DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="RayCastCallback.hpp">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

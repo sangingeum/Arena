@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseGameSystem.hpp"
 #include "ContactListener.hpp"
+#include "RayCastCallback.hpp"
 #include "EntityFactory.hpp"
 #include <iostream>
 
@@ -9,7 +10,7 @@ class ScenePlay : public Scene
 	entt::registry m_registry{};
 	BaseGameSystem& m_gameSystem;
 	Config& m_config;
-	const b2Vec2 m_gravity{ 0, 9.8f };
+	const b2Vec2 m_gravity{ 0, 20.0f };
 	b2World m_world{ m_gravity };
 	//ContactListenerWhiteGreen m_listener{ m_registry };
 	int32 velocityIterations;
@@ -44,7 +45,7 @@ public:
 	}
 	void sUpdate() override {
 
-		m_registry.view<CPlayerInput, CState, CCollision>().each([](const entt::entity entiy, CPlayerInput& cPlayerInput, CState& cState, CCollision& cCollision) {
+		m_registry.view<CPlayerInput, CState, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CState& cState, CCollision& cCollision) {
 			// Set player velocity
 			b2Vec2 vel{ 0, cCollision.body->GetLinearVelocity().y };
 			if (cPlayerInput.moveLeft)
@@ -55,16 +56,20 @@ public:
 				else
 					vel.x = 4;
 			if (cPlayerInput.jump) {
-				vel.y = -5;
+				vel.y = -8;
 			}
 			cCollision.body->SetLinearVelocity(vel);
+			RayCastCallbackGetShortest rayCallback;
+			auto p1 = cCollision.body->GetPosition();
+			auto p2 = b2Vec2{ p1.x, p1.y + 1.0f };
+			m_world.RayCast(&rayCallback, p1, p2);
 			// Change state
-			if (std::abs(vel.y) >= 0.1f) {
-				cState.nextID = StateID::Jump;
-			}
-			else {
+			//std::cout << rayCallback.shortest << "\n";
+			if (rayCallback.shortest < 1.0f)
 				cState.nextID = StateID::Idle;
-			}
+			else
+				cState.nextID = StateID::Jump;
+
 			});
 		// Update state & Change state animation
 		m_registry.view<CState, CAnimation>().each([&](const entt::entity entiy, CState& cState, CAnimation& cAnimation) {
