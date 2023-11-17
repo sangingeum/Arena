@@ -28,6 +28,7 @@ private:
 	void sUpdate();
 	void sAnimation(float timeStep);
 	void sHandleInput();
+	void sCooldown(float timeStep);
 	void sPhysics(float timeStep);
 	void sRender();
 

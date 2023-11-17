@@ -13,6 +13,7 @@ void GameSystem::run() {
 		sHandleInput();
 		if (!m_pause) {
 			sUpdate();
+			sCooldown(timeStep);
 			sPhysics(timeStep);
 			sAnimation(timeStep);
 		}
@@ -21,7 +22,9 @@ void GameSystem::run() {
 }
 
 void GameSystem::quit() {
-	m_window.close();
+	if (m_window.isOpen()) {
+		m_window.close();
+	};
 }
 
 void GameSystem::pause() {
@@ -86,6 +89,17 @@ void GameSystem::sHandleInput() {
 	{
 		Action action = ActionBinder::getAction(event);
 		getCurrentScene()->sHandleAction(m_window, std::move(action));
+	}
+}
+
+void GameSystem::sCooldown(float timeStep)
+{
+	static float accumulatedTime{ 0.f };
+	accumulatedTime += timeStep;
+	float deltaTime = m_config.deltaTime;
+	while (accumulatedTime > deltaTime) {
+		accumulatedTime -= deltaTime;
+		getCurrentScene()->sCooldown(deltaTime);
 	}
 }
 

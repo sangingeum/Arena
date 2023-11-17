@@ -75,28 +75,34 @@ struct CAnimation {
 
 struct CCollision
 {
-	b2Body* body;
-	uint32_t numContacts{ 0 };
-	CCollision(b2World& world, entt::entity entity, float halfWidth, float halfHeight, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody, float xVel = 0.f, float yVel = 0.f,
-		float friction = 0.4f, float restitution = 0.f, float density = 1.0f, bool fixedRotation = false)
+	b2Body* body{ nullptr };
+	CCollision(b2World& world, entt::entity entity, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody, bool fixedRotation = false)
 	{
 		b2BodyDef def;
 		def.position.Set(xPos, yPos);
 		def.type = type;
 		def.fixedRotation = fixedRotation;
 		body = world.CreateBody(&def);
+		body->GetUserData().pointer = (uintptr_t)entity;
+	}
+
+	b2Fixture* addBoxFixture(float halfWidth, float halfHeight, float xOffset = 0.f, float yOffset = 0.f, float angle = 0.f, float friction = 0.4f, float restitution = 0.f, float density = 1.0f, bool isSensor = false,
+		uint16_t categoryBits = 0x0001, uint16_t maskBits = 0xFFFF) {
+		if (!body)
+			return nullptr;
 		b2PolygonShape boxShape;
-		boxShape.SetAsBox(halfWidth, halfHeight);
+		boxShape.SetAsBox(halfWidth, halfHeight, b2Vec2{ xOffset,yOffset }, angle);
 		b2FixtureDef fDef;
 		fDef.shape = &boxShape;
 		fDef.friction = friction;
 		fDef.restitution = restitution;
 		fDef.density = density;
-
-		body->CreateFixture(&fDef);
-		body->SetLinearVelocity({ xVel, yVel });
-		body->GetUserData().pointer = (uintptr_t)entity;
+		fDef.isSensor = isSensor;
+		fDef.filter.categoryBits = categoryBits;
+		fDef.filter.maskBits = maskBits;
+		return body->CreateFixture(&fDef);
 	}
+
 };
 
 struct CState {
@@ -107,6 +113,9 @@ struct CState {
 struct CPlayerInput
 {
 	sf::Transform direction{ sf::Transform::Identity };
+	uint32_t numObjectsOnFoot{ 0 };
+	float UpJumpCooldown{ 0.f };
+	float DownJumpCooldown{ 0.f };
 	bool moveUp{ false };
 	bool moveDown{ false };
 	bool moveLeft{ false };
@@ -143,7 +152,14 @@ struct CPlayerInput
 		}
 	}
 
+	inline void resetUpjumpCooldown() {
+		UpJumpCooldown = 0.05f;
+	}
+	inline void resetDownjumpCooldown() {
+		DownJumpCooldown = 0.05f;
+	}
 	void reset() {
+		numObjectsOnFoot = 0;
 		moveUp = false;
 		moveDown = false;
 		moveLeft = false;

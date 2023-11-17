@@ -31,6 +31,9 @@ public:
 	void sAnimation(float timeStep) override {
 
 	}
+	void sCooldown(float timeStep) override {
+
+	}
 	void sPhysics(float timeStep) override {
 	}
 	void sHandleAction(sf::RenderWindow& window, Action action) override {

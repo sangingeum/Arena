@@ -4,6 +4,7 @@
 #include "RayCastCallback.hpp"
 #include "EntityFactory.hpp"
 #include <iostream>
+#include <limits>
 
 class ScenePlay : public Scene
 {
@@ -12,7 +13,7 @@ class ScenePlay : public Scene
 	Config& m_config;
 	const b2Vec2 m_gravity{ 0, 20.0f };
 	b2World m_world{ m_gravity };
-	//ContactListenerWhiteGreen m_listener{ m_registry };
+	ContactListenerPlayScene m_listener{ m_registry };
 	int32 velocityIterations;
 	int32 positionIterations;
 public:
@@ -22,7 +23,7 @@ public:
 		velocityIterations(m_config.velocityIterations),
 		positionIterations(m_config.positionIterations)
 	{
-		//m_world.SetContactListener(&m_listener);
+		m_world.SetContactListener(&m_listener);
 		init();
 	}
 
@@ -55,17 +56,9 @@ public:
 					vel.x = 0;
 				else
 					vel.x = 4;
-			if (cPlayerInput.jump) {
-				vel.y = -8;
-			}
 			cCollision.body->SetLinearVelocity(vel);
-			RayCastCallbackGetShortest rayCallback;
-			auto p1 = cCollision.body->GetPosition();
-			auto p2 = b2Vec2{ p1.x, p1.y + 1.0f };
-			m_world.RayCast(&rayCallback, p1, p2);
 			// Change state
-			//std::cout << rayCallback.shortest << "\n";
-			if (rayCallback.shortest < 1.0f)
+			if (cPlayerInput.numObjectsOnFoot)
 				cState.nextID = StateID::Idle;
 			else
 				cState.nextID = StateID::Jump;
@@ -95,7 +88,25 @@ public:
 			cAnimation.updateFrame(timeStep);
 			});
 	}
+	void sCooldown(float timeStep) override {
+		m_registry.view<CPlayerInput, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CCollision& cCollision) {
+			cPlayerInput.UpJumpCooldown = std::max(0.f, cPlayerInput.UpJumpCooldown - timeStep);
+			cPlayerInput.DownJumpCooldown = std::max(0.f, cPlayerInput.DownJumpCooldown - timeStep);
+			});
+	}
 	void sPhysics(float timeStep) override {
+		m_registry.view<CPlayerInput, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CCollision& cCollision) {
+			//std::cout << cPlayerInput.jump << " " << cPlayerInput.numObjectsOnFoot << " " << cPlayerInput.UpJumpCooldown << "\n";
+			if (cPlayerInput.jump && (cPlayerInput.numObjectsOnFoot) && cPlayerInput.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+				cPlayerInput.resetUpjumpCooldown();
+				//cCollision.body->ApplyLinearImpulseToCenter(cCollision.body->GetMass() * b2Vec2 { 0.f, -12.f }, true);
+				cCollision.body->SetLinearVelocity(b2Vec2{ 0.f, -12.f });
+			}
+			if (cPlayerInput.moveDown && (!cPlayerInput.numObjectsOnFoot) && cPlayerInput.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
+				cPlayerInput.resetDownjumpCooldown();
+				cCollision.body->SetLinearVelocity(b2Vec2{ 0.f, 50.f });
+			}
+			});
 		m_world.Step(timeStep, velocityIterations, positionIterations);
 	}
 	void sHandleAction(sf::RenderWindow& window, Action action) override {
@@ -126,11 +137,8 @@ public:
 		case ActionID::mousePrimary: {
 			auto [flag, x, y] = action.args;
 			if (flag) {
-				float ratio = 0.01f;
 				auto worldPos = window.mapPixelToCoords({ static_cast<int>(x), static_cast<int>(y) });
-				auto entity = m_registry.create();
-				m_registry.emplace<CCollision>(entity, m_world, entity, 0.5f, 0.5f, worldPos.x, worldPos.y);
-				m_registry.emplace<CRenderable>(entity, 0.5f, 0.5f);
+				EntityFactory::createPhysicalBox(m_registry, m_world, 0.5f, 0.5f, worldPos.x, worldPos.y);
 				std::cout << worldPos.x << ", " << worldPos.y << "\n";
 			}
 			break;
@@ -156,10 +164,13 @@ public:
 			break;
 		}
 		case ActionID::pause: {
-			if (m_gameSystem.getPaused())
-				m_gameSystem.unpause();
-			else
-				m_gameSystem.pause();
+			auto [pressed, x, y] = action.args;
+			if (pressed) {
+				if (m_gameSystem.getPaused())
+					m_gameSystem.unpause();
+				else
+					m_gameSystem.pause();
+			}
 			break;
 		}
 		default:
@@ -175,7 +186,6 @@ public:
 	}
 private:
 	void init() {
-		float ratio = 0.01f;
 		// Boundary boxes
 		EntityFactory::createPhysicalBox(m_registry, m_world, 5000.f, 0.1f, 0, 0, b2BodyType::b2_staticBody);
 		EntityFactory::createShinobi(m_registry, m_world, 0.f, -2.f);

@@ -17,6 +17,8 @@ ActionBinder::ActionBinder() {
 	m_keyMap[sf::Keyboard::Scancode::Num3] = ActionID::number3;
 	m_keyMap[sf::Keyboard::Scancode::Num4] = ActionID::number4;
 	m_keyMap[sf::Keyboard::Scancode::Num5] = ActionID::number5;
+	// Game
+	m_keyMap[sf::Keyboard::Scancode::P] = ActionID::pause;
 }
 
 Action ActionBinder::getAction(sf::Event event) {
