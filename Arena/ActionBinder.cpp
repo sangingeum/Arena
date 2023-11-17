@@ -8,6 +8,9 @@ ActionBinder::ActionBinder() {
 	m_keyMap[sf::Keyboard::Scancode::S] = ActionID::characterMoveDown;
 	m_keyMap[sf::Keyboard::Scancode::D] = ActionID::characterMoveRight;
 	m_keyMap[sf::Keyboard::Scancode::Space] = ActionID::characterJump;
+	m_keyMap[sf::Keyboard::Scancode::Z] = ActionID::characterAttack1;
+	m_keyMap[sf::Keyboard::Scancode::X] = ActionID::characterAttack2;
+	m_keyMap[sf::Keyboard::Scancode::C] = ActionID::characterAttack3;
 	// Camera
 	m_keyMap[sf::Keyboard::Scancode::Q] = ActionID::cameraMoveLeft;
 	m_keyMap[sf::Keyboard::Scancode::E] = ActionID::cameraMoveRight;
@@ -19,6 +22,8 @@ ActionBinder::ActionBinder() {
 	m_keyMap[sf::Keyboard::Scancode::Num5] = ActionID::number5;
 	// Game
 	m_keyMap[sf::Keyboard::Scancode::P] = ActionID::pause;
+	// Special keys
+	m_keyMap[sf::Keyboard::Scancode::LShift] = ActionID::leftShift;
 }
 
 Action ActionBinder::getAction(sf::Event event) {

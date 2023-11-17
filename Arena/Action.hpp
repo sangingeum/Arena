@@ -8,7 +8,9 @@ enum class ActionID {
 	characterMoveDown,
 	characterMoveRight,
 	characterJump,
-	characterAttack,
+	characterAttack1,
+	characterAttack2,
+	characterAttack3,
 	cameraZoom,
 	cameraMoveUp,
 	cameraMoveLeft,
@@ -24,6 +26,8 @@ enum class ActionID {
 	number3,
 	number4,
 	number5,
+	leftShift,
+	rightShift,
 };
 
 using ActionArgument = std::tuple<bool, float, float>;

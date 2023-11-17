@@ -41,21 +41,33 @@ public:
 			auto& pos = cPhysics.body->GetPosition();
 			auto radian = cPhysics.body->GetAngle();
 			t.translate({ pos.x, pos.y }).rotate(radian * radianToDegree);
-			window.draw(cAnimation.sprite, t * cPlayerInput.direction);
+			window.draw(cAnimation.sprite, t * cPlayerInput.getDirection());
 			});
 	}
 	void sUpdate() override {
-
 		m_registry.view<CPlayerInput, CState, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CState& cState, CCollision& cCollision) {
 			// Set player velocity
-			b2Vec2 vel{ 0, cCollision.body->GetLinearVelocity().y };
+			// Set x velocity
+			b2Vec2 vel{ 0.f, cCollision.body->GetLinearVelocity().y };
 			if (cPlayerInput.moveLeft)
-				vel.x = -4;
-			if (cPlayerInput.moveRight)
-				if (cPlayerInput.moveLeft)
-					vel.x = 0;
+				if (cPlayerInput.shift)
+					vel.x = -cPlayerInput.runningSpeed;
 				else
-					vel.x = 4;
+					vel.x = -cPlayerInput.walkingSpeed;
+			if (cPlayerInput.moveRight)
+				if (cPlayerInput.shift)
+					vel.x = cPlayerInput.runningSpeed;
+				else
+					vel.x = cPlayerInput.walkingSpeed;
+			// Set y velocity
+			if (cPlayerInput.jump && (cPlayerInput.numObjectsOnFoot) && cPlayerInput.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+				cPlayerInput.resetUpJumpCooldown();
+				vel.y = -cPlayerInput.upJumpSpeed;
+			}
+			else if (cPlayerInput.moveDown && (!cPlayerInput.numObjectsOnFoot) && cPlayerInput.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
+				cPlayerInput.resetDownJumpCooldown();
+				vel.y = cPlayerInput.downJumpSpeed;
+			}
 			cCollision.body->SetLinearVelocity(vel);
 			// Change state
 			if (cPlayerInput.numObjectsOnFoot)
@@ -95,18 +107,7 @@ public:
 			});
 	}
 	void sPhysics(float timeStep) override {
-		m_registry.view<CPlayerInput, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CCollision& cCollision) {
-			//std::cout << cPlayerInput.jump << " " << cPlayerInput.numObjectsOnFoot << " " << cPlayerInput.UpJumpCooldown << "\n";
-			if (cPlayerInput.jump && (cPlayerInput.numObjectsOnFoot) && cPlayerInput.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
-				cPlayerInput.resetUpjumpCooldown();
-				//cCollision.body->ApplyLinearImpulseToCenter(cCollision.body->GetMass() * b2Vec2 { 0.f, -12.f }, true);
-				cCollision.body->SetLinearVelocity(b2Vec2{ 0.f, -12.f });
-			}
-			if (cPlayerInput.moveDown && (!cPlayerInput.numObjectsOnFoot) && cPlayerInput.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
-				cPlayerInput.resetDownjumpCooldown();
-				cCollision.body->SetLinearVelocity(b2Vec2{ 0.f, 50.f });
-			}
-			});
+
 		m_world.Step(timeStep, velocityIterations, positionIterations);
 	}
 	void sHandleAction(sf::RenderWindow& window, Action action) override {
@@ -116,7 +117,12 @@ public:
 		case ActionID::characterMoveDown:
 		case ActionID::characterMoveLeft:
 		case ActionID::characterMoveRight:
-		case ActionID::characterJump: {
+		case ActionID::characterJump:
+		case ActionID::leftShift:
+		case ActionID::characterAttack1:
+		case ActionID::characterAttack2:
+		case ActionID::characterAttack3:
+		{
 			auto [pressed, x, y] = action.args;
 			m_registry.view<CPlayerInput>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput) {
 				cPlayerInput.handleAction(action.id, pressed);

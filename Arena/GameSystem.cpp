@@ -12,8 +12,8 @@ void GameSystem::run() {
 		float timeStep = clock.restart().asSeconds();
 		sHandleInput();
 		if (!m_pause) {
-			sUpdate();
 			sCooldown(timeStep);
+			sUpdate();
 			sPhysics(timeStep);
 			sAnimation(timeStep);
 		}
