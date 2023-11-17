@@ -11,7 +11,6 @@ void GameSystem::run() {
 	while (m_window.isOpen()) {
 		float timeStep = clock.restart().asSeconds();
 		sHandleInput();
-		timeStep = std::min(timeStep, 0.05f);
 		if (!m_pause) {
 			sUpdate();
 			sPhysics(timeStep);
@@ -68,7 +67,13 @@ void GameSystem::init() {
 
 void GameSystem::sAnimation(float timeStep)
 {
-	getCurrentScene()->sAnimation(timeStep);
+	static float accumulatedTime{ 0.f };
+	accumulatedTime += timeStep;
+	float deltaTime = m_config.deltaTime;
+	while (accumulatedTime > deltaTime) {
+		accumulatedTime -= deltaTime;
+		getCurrentScene()->sAnimation(deltaTime);
+	}
 }
 
 void GameSystem::sUpdate() {
@@ -85,7 +90,13 @@ void GameSystem::sHandleInput() {
 }
 
 void GameSystem::sPhysics(float timeStep) {
-	getCurrentScene()->sPhysics(timeStep);
+	static float accumulatedTime{ 0.f };
+	accumulatedTime += timeStep;
+	float deltaTime = m_config.deltaTime;
+	while (accumulatedTime > deltaTime) {
+		accumulatedTime -= deltaTime;
+		getCurrentScene()->sPhysics(deltaTime);
+	}
 }
 
 void GameSystem::sRender() {

@@ -34,6 +34,7 @@ public:
 	unsigned windowHeight{ 720 };
 	float halfWindowWidth;
 	float halfWindowHeight;
+	float deltaTime{ 1 / 60.f };
 	uint32_t velocityIterations{ 16 };
 	uint32_t positionIterations{ 6 };
 	const float pi{ 3.14159265358979323846f };
