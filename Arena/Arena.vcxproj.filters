@@ -31,6 +31,9 @@
     <Filter Include="DataStructure">
       <UniqueIdentifier>{bb20700d-647e-4034-ac85-df60989d9db9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{9c1c4dc9-6646-454d-bbd5-f87f1ef8c940}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,6 +93,12 @@
     <ClCompile Include="CharacterData.cpp">
       <Filter>Character</Filter>
     </ClCompile>
+    <ClCompile Include="CPlayerContext.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerInput.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScenePlay.hpp">
@@ -115,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="ActionBinder.hpp">
       <Filter>Action</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.hpp">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Config.hpp">
       <Filter>Common</Filter>
@@ -160,6 +166,15 @@
     </ClInclude>
     <ClInclude Include="RayCastCallback.hpp">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerContext.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerInput.hpp">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

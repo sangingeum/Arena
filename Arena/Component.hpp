@@ -4,6 +4,7 @@
 #include <entt.hpp>
 #include <SFML/Graphics.hpp>
 #include "State.hpp"
+#include "CPlayerContext.hpp"
 
 struct CTransform
 {
@@ -102,100 +103,5 @@ struct CCollision
 		fDef.filter.maskBits = maskBits;
 		return body->CreateFixture(&fDef);
 	}
-
-};
-
-struct CState {
-	StateID curID{ StateID::Idle };
-	StateID nextID{ StateID::Idle };
-};
-
-struct CPlayerInput
-{
-private:
-	sf::Transform left{ sf::Transform::Identity };
-public:
-	CPlayerInput() {
-		left.scale({ -1.f, 1.f });
-	}
-	uint32_t numObjectsOnFoot{ 0 };
-	float UpJumpCooldown{ 0.f };
-	float DownJumpCooldown{ 0.f };
-	float walkingSpeed{ 4.f };
-	float runningSpeed{ 8.f };
-	float upJumpSpeed{ 12.f };
-	float downJumpSpeed{ 50.f };
-	// Pressed Keys 
-	bool moveUp{ false };
-	bool moveDown{ false };
-	bool moveLeft{ false };
-	bool moveRight{ false };
-	bool jump{ false };
-	bool shift{ false };
-	bool attack1{ false };
-	bool attack2{ false };
-	bool attack3{ false };
-	// Character direction
-	bool lookingRight{ true };
-
-	void handleAction(ActionID id, bool pressed) {
-		switch (id)
-		{
-		case ActionID::characterMoveUp:
-			moveUp = pressed;
-			break;
-		case ActionID::characterMoveLeft:
-			moveLeft = pressed;
-			if (pressed) {
-				lookingRight = false;
-			}
-			break;
-		case ActionID::characterMoveDown:
-			moveDown = pressed;
-			break;
-		case ActionID::characterMoveRight:
-			moveRight = pressed;
-			if (pressed) {
-				lookingRight = true;
-			}
-			break;
-		case ActionID::characterJump:
-			jump = pressed;
-			break;
-		case ActionID::leftShift:
-			shift = pressed;
-			break;
-		case ActionID::characterAttack1:
-			attack1 = pressed;
-			break;
-		case ActionID::characterAttack2:
-			attack2 = pressed;
-			break;
-		case ActionID::characterAttack3:
-			attack3 = pressed;
-			break;
-		default:
-			break;
-		}
-	}
-	inline sf::Transform getDirection() {
-		return lookingRight ? sf::Transform::Identity : left;
-	}
-	inline void resetUpJumpCooldown() {
-		UpJumpCooldown = 0.05f;
-	}
-	inline void resetDownJumpCooldown() {
-		DownJumpCooldown = 0.05f;
-	}
-	void reset() {
-		numObjectsOnFoot = 0;
-		moveUp = false;
-		moveDown = false;
-		moveLeft = false;
-		moveRight = false;
-		jump = false;
-		lookingRight = true;
-	}
-
 
 };

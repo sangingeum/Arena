@@ -3,6 +3,7 @@
 #include "ContactListener.hpp"
 #include "RayCastCallback.hpp"
 #include "EntityFactory.hpp"
+#include "CPlayerContext.hpp"
 #include <iostream>
 #include <limits>
 
@@ -36,51 +37,25 @@ public:
 			t.translate({ pos.x, pos.y }).rotate(radian * radianToDegree);
 			window.draw(cRender.shape, t);
 			});
-		m_registry.view<CCollision, CAnimation, CPlayerInput>().each([&](const entt::entity entiy, CCollision& cPhysics, CAnimation& cAnimation, CPlayerInput& cPlayerInput) {
+		m_registry.view<CCollision, CAnimation, CPlayerContext>().each([&](const entt::entity entiy, CCollision& cPhysics, CAnimation& cAnimation, CPlayerContext& CPlayerContext) {
 			sf::Transform t;
 			auto& pos = cPhysics.body->GetPosition();
 			auto radian = cPhysics.body->GetAngle();
 			t.translate({ pos.x, pos.y }).rotate(radian * radianToDegree);
-			window.draw(cAnimation.sprite, t * cPlayerInput.getDirection());
+			window.draw(cAnimation.sprite, t * CPlayerContext.getDirection());
 			});
 	}
 	void sUpdate() override {
-		m_registry.view<CPlayerInput, CState, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CState& cState, CCollision& cCollision) {
-			// Set player velocity
-			// Set x velocity
-			b2Vec2 vel{ 0.f, cCollision.body->GetLinearVelocity().y };
-			if (cPlayerInput.moveLeft)
-				if (cPlayerInput.shift)
-					vel.x = -cPlayerInput.runningSpeed;
-				else
-					vel.x = -cPlayerInput.walkingSpeed;
-			if (cPlayerInput.moveRight)
-				if (cPlayerInput.shift)
-					vel.x = cPlayerInput.runningSpeed;
-				else
-					vel.x = cPlayerInput.walkingSpeed;
-			// Set y velocity
-			if (cPlayerInput.jump && (cPlayerInput.numObjectsOnFoot) && cPlayerInput.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
-				cPlayerInput.resetUpJumpCooldown();
-				vel.y = -cPlayerInput.upJumpSpeed;
-			}
-			else if (cPlayerInput.moveDown && (!cPlayerInput.numObjectsOnFoot) && cPlayerInput.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
-				cPlayerInput.resetDownJumpCooldown();
-				vel.y = cPlayerInput.downJumpSpeed;
-			}
-			cCollision.body->SetLinearVelocity(vel);
-			// Change state
-			if (cPlayerInput.numObjectsOnFoot)
-				cState.nextID = StateID::Idle;
-			else
-				cState.nextID = StateID::Jump;
-
+		m_registry.view<CPlayerContext, CCollision>().each([&](const entt::entity entiy, CPlayerContext& cPlayerContext, CCollision& cCollision) {
+			// Update state
+			cPlayerContext.update();
+			// Update player velocity
+			cCollision.body->SetLinearVelocity(cPlayerContext.calculateNextVelocity(cCollision.body->GetLinearVelocity()));
 			});
-		// Update state & Change state animation
-		m_registry.view<CState, CAnimation>().each([&](const entt::entity entiy, CState& cState, CAnimation& cAnimation) {
-			if (cState.curID != cState.nextID) {
-				cState.curID = cState.nextID;
-				switch (cState.curID)
+		// Change state animation if necessary
+		m_registry.view<CPlayerContext, CAnimation>().each([&](const entt::entity entiy, CPlayerContext& CPlayerContext, CAnimation& cAnimation) {
+			if (CPlayerContext.retrieveAndResetNeedAnimationUpdate()) {
+				switch (CPlayerContext.getCurrentStateID())
 				{
 				case StateID::Idle:
 					m_registry.replace<CAnimation>(entiy, ShinobiAnimation::getIdle());
@@ -101,13 +76,12 @@ public:
 			});
 	}
 	void sCooldown(float timeStep) override {
-		m_registry.view<CPlayerInput, CCollision>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput, CCollision& cCollision) {
-			cPlayerInput.UpJumpCooldown = std::max(0.f, cPlayerInput.UpJumpCooldown - timeStep);
-			cPlayerInput.DownJumpCooldown = std::max(0.f, cPlayerInput.DownJumpCooldown - timeStep);
+		m_registry.view<CPlayerContext, CCollision>().each([&](const entt::entity entiy, CPlayerContext& CPlayerContext, CCollision& cCollision) {
+			CPlayerContext.UpJumpCooldown = std::max(0.f, CPlayerContext.UpJumpCooldown - timeStep);
+			CPlayerContext.DownJumpCooldown = std::max(0.f, CPlayerContext.DownJumpCooldown - timeStep);
 			});
 	}
 	void sPhysics(float timeStep) override {
-
 		m_world.Step(timeStep, velocityIterations, positionIterations);
 	}
 	void sHandleAction(sf::RenderWindow& window, Action action) override {
@@ -124,8 +98,8 @@ public:
 		case ActionID::characterAttack3:
 		{
 			auto [pressed, x, y] = action.args;
-			m_registry.view<CPlayerInput>().each([&](const entt::entity entiy, CPlayerInput& cPlayerInput) {
-				cPlayerInput.handleAction(action.id, pressed);
+			m_registry.view<CPlayerContext>().each([&](const entt::entity entiy, CPlayerContext& CPlayerContext) {
+				CPlayerContext.handleAction(action.id, pressed);
 				});
 			break;
 		}

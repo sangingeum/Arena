@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.hpp"
+#include "CPlayerContext.hpp"
 #include <box2d/box2d.h>
 #include <entt.hpp>
 #include "AssetManager.hpp"
@@ -30,11 +31,10 @@ public:
 		auto& anim = registry.emplace<CAnimation>(entity, ShinobiAnimation::getIdle());
 		//anim.sprite.getTextureRect();
 		auto& cCollision = registry.emplace<CCollision>(entity, world, entity, xPos, yPos, b2BodyType::b2_dynamicBody, true);
-		cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.6f, 0.f, halfHeight * 0.35f, 0.f, 0.4f, 0.f, 1.f, false); // hitbox
+		cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.6f, 0.f, halfHeight * 0.35f, 0.f, 0.7f, 0.f, 1.f, false); // hitbox
 		auto* footFixture = cCollision.addBoxFixture(halfWidth * 0.20f, halfHeight * 0.05f, 0.f, halfHeight, 0.f, 0.0f, 0.f, 0.f, true); // foot sensor
 		footFixture->GetUserData().pointer = 10000; // foot
-		registry.emplace<CPlayerInput>(entity);
-		registry.emplace<CState>(entity);
+		registry.emplace<CPlayerContext>(entity);
 		return entity;
 	}
 };

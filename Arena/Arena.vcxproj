@@ -162,8 +162,10 @@
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="ActionBinder.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="CPlayerInput.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
     <ClCompile Include="CharacterData.cpp" />
+    <ClCompile Include="CPlayerContext.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -183,11 +185,13 @@
     <ClInclude Include="Action.hpp" />
     <ClInclude Include="ActionBinder.hpp" />
     <ClInclude Include="AssetManager.hpp" />
+    <ClInclude Include="CPlayerInput.hpp" />
     <ClInclude Include="BaseGameSystem.hpp" />
     <ClInclude Include="CharacterData.hpp" />
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="ContactListener.hpp" />
+    <ClInclude Include="CPlayerContext.hpp" />
     <ClInclude Include="EntityFactory.hpp" />
     <ClInclude Include="GameSystem.hpp" />
     <ClInclude Include="RayCastCallback.hpp" />
