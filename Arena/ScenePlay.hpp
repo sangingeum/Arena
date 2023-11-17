@@ -1,11 +1,8 @@
 #pragma once
 #include "BaseGameSystem.hpp"
 #include "ContactListener.hpp"
-#include "RayCastCallback.hpp"
 #include "EntityFactory.hpp"
-#include "CPlayerContext.hpp"
 #include <iostream>
-#include <limits>
 
 class ScenePlay : public Scene
 {

@@ -1,9 +1,4 @@
 #pragma once
-#include "Component.hpp"
-#include "CPlayerContext.hpp"
-#include <box2d/box2d.h>
-#include <entt.hpp>
-#include "AssetManager.hpp"
 #include "ShinobiAnimation.hpp"
 
 class EntityFactory

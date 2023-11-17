@@ -1,7 +1,5 @@
 #pragma once
-#include "CPlayerInput.hpp"
 #include "State.hpp"
-#include <memory>
 
 class CPlayerContext : public CPlayerInput
 {

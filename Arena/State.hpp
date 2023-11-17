@@ -1,5 +1,4 @@
 #pragma once
-#include "Action.hpp"
 #include "CPlayerInput.hpp"
 #include <box2d/box2d.h>
 
