@@ -63,7 +63,7 @@ public:
 	}
 	b2Vec2 calculateNextVelocity(b2Vec2 curVelocity) override {
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}
@@ -105,7 +105,7 @@ public:
 			else
 				curVelocity.x = m_context.walkingSpeed;
 		// Down jump
-		if (m_context.moveDown && (!m_context.numObjectsOnFoot) && m_context.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canDownJump()) {
 			m_context.resetDownJumpCooldown();
 			curVelocity.y = m_context.downJumpSpeed;
 		}
@@ -153,7 +153,7 @@ public:
 			else
 				curVelocity.x = m_context.walkingSpeed;
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}
@@ -201,7 +201,7 @@ public:
 			else
 				curVelocity.x = m_context.walkingSpeed;
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}
@@ -229,7 +229,7 @@ public:
 		if (m_context.moveRight)
 			curVelocity.x = m_context.walkingSpeed / 4.f;
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}
@@ -257,7 +257,7 @@ public:
 		if (m_context.moveRight)
 			curVelocity.x = m_context.walkingSpeed / 2.f;
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}
@@ -285,7 +285,7 @@ public:
 		if (m_context.moveRight)
 			curVelocity.x = m_context.walkingSpeed / 2.f;
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}
@@ -313,7 +313,7 @@ public:
 		if (m_context.moveRight)
 			curVelocity.x = m_context.walkingSpeed / 2.f;
 		// Up jump
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		if (m_context.canUpJump()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
 		}

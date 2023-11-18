@@ -14,6 +14,7 @@ public:
 	uint32_t numObjectsOnFoot{ 0 };
 	float UpJumpCooldown{ 0.f };
 	float DownJumpCooldown{ 0.f };
+	float AttackCooldown{ 0.f };
 	float walkingSpeed{ 4.f };
 	float runningSpeed{ 8.f };
 	float upJumpSpeed{ 12.f };
@@ -76,10 +77,26 @@ public:
 	inline sf::Transform getDirection() {
 		return lookingRight ? sf::Transform::Identity : left;
 	}
+
+	void updateCooldown(float timeStep) {
+		UpJumpCooldown = std::max(0.f, UpJumpCooldown - timeStep);
+		DownJumpCooldown = std::max(0.f, DownJumpCooldown - timeStep);
+		AttackCooldown = std::max(0.f, AttackCooldown - timeStep);
+	}
+
 	inline void resetUpJumpCooldown() {
 		UpJumpCooldown = 0.05f;
 	}
+	inline bool canUpJump() {
+		return jump && (numObjectsOnFoot) && (UpJumpCooldown < std::numeric_limits<float>::epsilon());
+	}
 	inline void resetDownJumpCooldown() {
 		DownJumpCooldown = 0.05f;
+	}
+	inline bool canDownJump() {
+		return moveDown && (!numObjectsOnFoot) && (DownJumpCooldown < std::numeric_limits<float>::epsilon());
+	}
+	inline void resetAttackCooldown() {
+		AttackCooldown = 0.4f;
 	}
 };

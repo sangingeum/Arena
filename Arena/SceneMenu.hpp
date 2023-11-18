@@ -25,7 +25,7 @@ public:
 		if (!m_UIRoot.getHidden())
 			m_UIRoot.render(window);
 	}
-	void sUpdate() override {
+	void sUpdate(float timeStep) override {
 		m_UIRoot.update(m_config.windowWidth, m_config.windowHeight);
 	}
 	void sAnimation(float timeStep) override {

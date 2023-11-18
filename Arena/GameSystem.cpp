@@ -13,7 +13,7 @@ void GameSystem::run() {
 		sHandleInput();
 		if (!m_pause) {
 			sCooldown(timeStep);
-			sUpdate();
+			sUpdate(timeStep);
 			sPhysics(timeStep);
 			sAnimation(timeStep);
 		}
@@ -79,8 +79,8 @@ void GameSystem::sAnimation(float timeStep)
 	}
 }
 
-void GameSystem::sUpdate() {
-	getCurrentScene()->sUpdate();
+void GameSystem::sUpdate(float timeStep) {
+	getCurrentScene()->sUpdate(timeStep);
 }
 
 void GameSystem::sHandleInput() {

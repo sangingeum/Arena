@@ -13,7 +13,7 @@ class Scene
 public:
 	virtual ~Scene() = default;
 	virtual void sRender(sf::RenderWindow& window) = 0;
-	virtual void sUpdate() = 0;
+	virtual void sUpdate(float timeStep) = 0;
 	virtual void sAnimation(float timeStep) = 0;
 	virtual void sCooldown(float timeStep) = 0;
 	virtual void sPhysics(float timeStep) = 0;

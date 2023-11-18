@@ -2,6 +2,7 @@
 #include "BaseGameSystem.hpp"
 #include "ContactListener.hpp"
 #include "EntityFactory.hpp"
+#include "QueryCallback.hpp"
 #include <iostream>
 
 class ScenePlay : public Scene
@@ -42,12 +43,32 @@ public:
 			window.draw(cAnimation.sprite, t * CPlayerContext.getDirection());
 			});
 	}
-	void sUpdate() override {
+	void sUpdate(float timeStep) override {
+
+		m_registry.view<CTimer>().each([&](const entt::entity entity, CTimer& cTimer) {
+			cTimer.updateTime(timeStep);
+			if (cTimer.isOver())
+				m_registry.destroy(entity); // Check if this invalidates the loop
+			});
+
 		m_registry.view<CPlayerContext, CCollision>().each([&](const entt::entity entity, CPlayerContext& cPlayerContext, CCollision& cCollision) {
 			// Update state
 			cPlayerContext.update();
 			// Update player velocity
 			cCollision.body->SetLinearVelocity(cPlayerContext.calculateNextVelocity(cCollision.body->GetLinearVelocity()));
+			// Create attack collision box
+			if (cPlayerContext.canAttack()) {
+				std::cout << "Attack!!\n" << "\n";
+				cPlayerContext.resetAttackCooldown();
+				b2Vec2 pos = cCollision.body->GetPosition() + (cPlayerContext.lookingRight ? b2Vec2{ 1.f, 0.3f } : b2Vec2{ -1.f, 0.3f });
+
+				auto entity = EntityFactory::createShinobiAttack(m_registry, m_world, pos.x, pos.y, cPlayerContext.lookingRight ? b2Vec2{ 10.f, 0.f } : b2Vec2{ -10.f, 0.f });
+				// awake boxes in the collision box
+				QueryCallbackAwake query;
+				auto aabb = m_registry.get<CCollision>(entity).body->GetFixtureList()->GetAABB(0);
+				m_world.QueryAABB(&query, aabb);
+			}
+
 			});
 		// Change state animation if necessary
 		m_registry.view<CPlayerContext, CAnimation>().each([&](const entt::entity entity, CPlayerContext& CPlayerContext, CAnimation& cAnimation) {
@@ -56,6 +77,7 @@ public:
 			}
 			});
 
+
 	}
 	void sAnimation(float timeStep) override {
 		m_registry.view<CAnimation>().each([timeStep](const entt::entity entiy, CAnimation& cAnimation) {
@@ -63,9 +85,8 @@ public:
 			});
 	}
 	void sCooldown(float timeStep) override {
-		m_registry.view<CPlayerContext, CCollision>().each([&](const entt::entity entiy, CPlayerContext& CPlayerContext, CCollision& cCollision) {
-			CPlayerContext.UpJumpCooldown = std::max(0.f, CPlayerContext.UpJumpCooldown - timeStep);
-			CPlayerContext.DownJumpCooldown = std::max(0.f, CPlayerContext.DownJumpCooldown - timeStep);
+		m_registry.view<CPlayerContext, CCollision>().each([timeStep](const entt::entity entiy, CPlayerContext& cPlayerContext, CCollision& cCollision) {
+			cPlayerContext.updateCooldown(timeStep);
 			});
 	}
 	void sPhysics(float timeStep) override {

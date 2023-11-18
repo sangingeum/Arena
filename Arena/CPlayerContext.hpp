@@ -72,6 +72,14 @@ public:
 			return getIdleAnimation(); // error
 		}
 	}
+	inline bool canAttack() {
+		StateID currentState = getCurrentStateID();
+		return (currentState == StateID::Attack_1 ||
+			currentState == StateID::Attack_2 ||
+			currentState == StateID::Attack_3) &&
+			(AttackCooldown < std::numeric_limits<float>::epsilon());
+	}
+
 	inline void setIdleAnimationGetter(std::function<CAnimation()> getIdleAnimation);
 	inline void setAttack1AnimationGetter(std::function<CAnimation()> getAttackAnimation);
 	inline void setAttack2AnimationGetter(std::function<CAnimation()> getAttackAnimation);
