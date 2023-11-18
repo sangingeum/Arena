@@ -162,6 +162,7 @@
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="ActionBinder.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="CollisionFilter.cpp" />
     <ClCompile Include="CPlayerInput.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
     <ClCompile Include="CharacterData.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Action.hpp" />
     <ClInclude Include="ActionBinder.hpp" />
     <ClInclude Include="AssetManager.hpp" />
+    <ClInclude Include="CollisionFilter.hpp" />
     <ClInclude Include="CPlayerInput.hpp" />
     <ClInclude Include="BaseGameSystem.hpp" />
     <ClInclude Include="CharacterData.hpp" />
