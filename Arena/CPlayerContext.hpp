@@ -96,8 +96,12 @@ protected:
 			needAnimationUpdate = true;
 			break;
 		case StateID::Walk:
+			m_state = std::make_unique<StatePlayerWalk>(*this);
+			needAnimationUpdate = true;
 			break;
 		case StateID::Run:
+			m_state = std::make_unique<StatePlayerRun>(*this);
+			needAnimationUpdate = true;
 			break;
 		case StateID::Dead:
 			break;

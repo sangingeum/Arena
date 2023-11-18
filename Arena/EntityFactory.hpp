@@ -7,7 +7,7 @@ public:
 	static entt::entity createPhysicalBox(entt::registry& registry, b2World& world, float halfWidth, float halfHeight, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody) {
 		auto entity = registry.create();
 		auto& cCollision = registry.emplace<CCollision>(entity, world, entity, xPos, yPos, type);
-		cCollision.addBoxFixture(halfWidth, halfHeight);
+		cCollision.addBoxFixture(halfWidth, halfHeight, 0.f, 0.f, 0.f, 0.8f);
 		registry.emplace<CRenderable>(entity, halfWidth, halfHeight);
 		return entity;
 	}
@@ -26,7 +26,7 @@ public:
 		auto& anim = registry.emplace<CAnimation>(entity, ShinobiAnimation::getIdle());
 		//anim.sprite.getTextureRect();
 		auto& cCollision = registry.emplace<CCollision>(entity, world, entity, xPos, yPos, b2BodyType::b2_dynamicBody, true);
-		cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.6f, 0.f, halfHeight * 0.35f, 0.f, 0.7f, 0.f, 1.f, false); // hitbox
+		cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.6f, 0.f, halfHeight * 0.35f, 0.f, 0.9f, 0.f, 1.f, false); // hitbox
 		auto* footFixture = cCollision.addBoxFixture(halfWidth * 0.20f, halfHeight * 0.05f, 0.f, halfHeight, 0.f, 0.0f, 0.f, 0.f, true); // foot sensor
 		footFixture->GetUserData().pointer = 10000; // foot
 		auto& cPlayerContext = registry.emplace<CPlayerContext>(entity);

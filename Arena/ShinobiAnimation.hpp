@@ -39,12 +39,12 @@ public:
 	static CAnimation getJump() {
 		constexpr float halfWidth = CharacterData::getShinobiHalfWidth();
 		constexpr float halfHeight = CharacterData::getShinobiHalfHeight();
-		return CAnimation{ AssetManager::getTexture(TextureID::Shinobi_Jump), sf::IntRect{ 0, 0, 128, 128 }, sf::Vector2f{ halfWidth * 2.f, halfHeight * 2.f }, 12, 1.5f };
+		return CAnimation{ AssetManager::getTexture(TextureID::Shinobi_Jump), sf::IntRect{ 0, 0, 128, 128 }, sf::Vector2f{ halfWidth * 2.f, halfHeight * 2.f }, 12, 1.0f };
 	}
 	static CAnimation getRun() {
 		constexpr float halfWidth = CharacterData::getShinobiHalfWidth();
 		constexpr float halfHeight = CharacterData::getShinobiHalfHeight();
-		return CAnimation{ AssetManager::getTexture(TextureID::Shinobi_Run), sf::IntRect{ 0, 0, 128, 128 }, sf::Vector2f{ halfWidth * 2.f, halfHeight * 2.f }, 8, 1.5f };
+		return CAnimation{ AssetManager::getTexture(TextureID::Shinobi_Run), sf::IntRect{ 0, 0, 128, 128 }, sf::Vector2f{ halfWidth * 2.f, halfHeight * 2.f }, 8, 0.7f };
 	}
 	static CAnimation getShield() {
 		constexpr float halfWidth = CharacterData::getShinobiHalfWidth();
