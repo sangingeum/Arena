@@ -5,6 +5,37 @@
 #include <SFML/Graphics.hpp>
 #include "State.hpp"
 
+struct CTimer {
+private:
+	float timeLeft;
+	float frozen;
+public:
+	CTimer(float time = 1.f, bool freeze = false)
+		:timeLeft(time), frozen(freeze)
+	{}
+	inline void updateTime(float timeStep) {
+		if (frozen)
+			return;
+		timeLeft = std::max(0.f, timeLeft - timeStep);
+	}
+	inline bool isOver() {
+		return timeLeft < std::numeric_limits<float>::epsilon();
+	}
+	inline void freeze() {
+		frozen = true;
+	}
+	inline void melt() {
+		frozen = false;
+	}
+};
+
+struct CImpulse {
+	CImpulse(b2Vec2 impulse_)
+		:impulse(std::move(impulse_))
+	{}
+	b2Vec2 impulse{ 0.f, 0.f };
+};
+
 struct CTransform
 {
 	sf::Transform transform;
@@ -76,7 +107,9 @@ struct CAnimation {
 struct CCollision
 {
 	b2Body* body{ nullptr };
+	b2World& m_world;
 	CCollision(b2World& world, entt::entity entity, float xPos, float yPos, b2BodyType type = b2BodyType::b2_dynamicBody, bool fixedRotation = false)
+		: m_world(world)
 	{
 		b2BodyDef def;
 		def.position.Set(xPos, yPos);
@@ -85,7 +118,9 @@ struct CCollision
 		body = world.CreateBody(&def);
 		body->GetUserData().pointer = (uintptr_t)entity;
 	}
-
+	~CCollision() {
+		m_world.DestroyBody(body);
+	}
 	b2Fixture* addBoxFixture(float halfWidth, float halfHeight, float xOffset = 0.f, float yOffset = 0.f, float angle = 0.f, float friction = 0.4f, float restitution = 0.f, float density = 1.0f, bool isSensor = false,
 		uint16_t categoryBits = 0x0001, uint16_t maskBits = 0xFFFF) {
 		if (!body)
@@ -104,3 +139,4 @@ struct CCollision
 	}
 
 };
+
