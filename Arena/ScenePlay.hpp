@@ -7,11 +7,11 @@
 
 class ScenePlay : public Scene
 {
+	const b2Vec2 m_gravity{ 0, 20.0f };
+	b2World m_world{ m_gravity };
 	entt::registry m_registry{};
 	BaseGameSystem& m_gameSystem;
 	Config& m_config;
-	const b2Vec2 m_gravity{ 0, 20.0f };
-	b2World m_world{ m_gravity };
 	ContactListenerPlayScene m_listener{ m_registry };
 	int32 velocityIterations;
 	int32 positionIterations;
@@ -163,6 +163,7 @@ public:
 		}
 		default:
 			break;
+
 		}
 
 	}

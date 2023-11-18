@@ -24,6 +24,7 @@ void GameSystem::run() {
 void GameSystem::quit() {
 	if (m_window.isOpen()) {
 		m_window.close();
+		m_pause = true;
 	};
 }
 

@@ -119,7 +119,8 @@ struct CCollision
 		body->GetUserData().pointer = (uintptr_t)entity;
 	}
 	~CCollision() {
-		m_world.DestroyBody(body);
+		if (body)
+			m_world.DestroyBody(body);
 	}
 	b2Fixture* addBoxFixture(float halfWidth, float halfHeight, float xOffset = 0.f, float yOffset = 0.f, float angle = 0.f, float friction = 0.4f, float restitution = 0.f, float density = 1.0f, bool isSensor = false,
 		uint16_t categoryBits = 0x0001, uint16_t maskBits = 0xFFFF) {
