@@ -6,9 +6,10 @@ enum class StateID {
 	noState, // It does not trigger state changes
 	Idle,
 	Attack,
-	InPain,
+	Hurt,
 	Jump,
-	Move,
+	Walk,
+	Run,
 	Dead
 };
 
@@ -43,7 +44,7 @@ public:
 		return StateID::noState;
 	}
 	b2Vec2 calculateNextVelocity(b2Vec2 curVelocity) override {
-		// Left Right moving
+		// Left Right move
 		if (m_context.moveLeft)
 			if (m_context.shift)
 				curVelocity.x = -m_context.runningSpeed;
@@ -54,13 +55,10 @@ public:
 				curVelocity.x = m_context.runningSpeed;
 			else
 				curVelocity.x = m_context.walkingSpeed;
+		// Up jump
 		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
 			m_context.resetUpJumpCooldown();
 			curVelocity.y = -m_context.upJumpSpeed;
-		}
-		else if (m_context.moveDown && (!m_context.numObjectsOnFoot) && m_context.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
-			m_context.resetDownJumpCooldown();
-			curVelocity.y = m_context.downJumpSpeed;
 		}
 		return std::move(curVelocity);
 	}
@@ -80,6 +78,7 @@ public:
 		return StateID::noState;
 	}
 	b2Vec2 calculateNextVelocity(b2Vec2 curVelocity) override {
+		// Left Right move
 		if (m_context.moveLeft)
 			if (m_context.shift)
 				curVelocity.x = -m_context.runningSpeed;
@@ -90,11 +89,8 @@ public:
 				curVelocity.x = m_context.runningSpeed;
 			else
 				curVelocity.x = m_context.walkingSpeed;
-		if (m_context.jump && (m_context.numObjectsOnFoot) && m_context.UpJumpCooldown < std::numeric_limits<float>::epsilon()) {
-			m_context.resetUpJumpCooldown();
-			curVelocity.y = -m_context.upJumpSpeed;
-		}
-		else if (m_context.moveDown && (!m_context.numObjectsOnFoot) && m_context.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
+		// Down jump
+		if (m_context.moveDown && (!m_context.numObjectsOnFoot) && m_context.DownJumpCooldown < std::numeric_limits<float>::epsilon()) {
 			m_context.resetDownJumpCooldown();
 			curVelocity.y = m_context.downJumpSpeed;
 		}

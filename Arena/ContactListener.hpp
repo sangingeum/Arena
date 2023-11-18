@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.hpp"
+#include "CPlayerContext.hpp"
 
 class ContactListenerPlayScene : public b2ContactListener {
 	entt::registry& m_registry;

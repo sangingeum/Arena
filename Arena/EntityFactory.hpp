@@ -1,6 +1,6 @@
 #pragma once
 #include "ShinobiAnimation.hpp"
-
+#include "CPlayerContext.hpp"
 class EntityFactory
 {
 public:
@@ -29,7 +29,16 @@ public:
 		cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.6f, 0.f, halfHeight * 0.35f, 0.f, 0.7f, 0.f, 1.f, false); // hitbox
 		auto* footFixture = cCollision.addBoxFixture(halfWidth * 0.20f, halfHeight * 0.05f, 0.f, halfHeight, 0.f, 0.0f, 0.f, 0.f, true); // foot sensor
 		footFixture->GetUserData().pointer = 10000; // foot
-		registry.emplace<CPlayerContext>(entity);
+		auto& cPlayerContext = registry.emplace<CPlayerContext>(entity);
+
+		cPlayerContext.setDeadAnimationGetter([]() { return ShinobiAnimation::getDead(); });
+		cPlayerContext.setHurtAnimationGetter([]() { return ShinobiAnimation::getHurt(); });
+		cPlayerContext.setIdleAnimationGetter([]() { return ShinobiAnimation::getIdle(); });
+		cPlayerContext.setJumpAnimationGetter([]() { return ShinobiAnimation::getJump(); });
+		cPlayerContext.setRunAnimationGetter([]() { return ShinobiAnimation::getRun(); });
+		cPlayerContext.setWalkAnimationGetter([]() { return ShinobiAnimation::getWalk(); });
+		cPlayerContext.setAttackAnimationGetter([]() { return ShinobiAnimation::getAttack_1(); });
+
 		return entity;
 	}
 };

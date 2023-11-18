@@ -4,7 +4,6 @@
 #include <entt.hpp>
 #include <SFML/Graphics.hpp>
 #include "State.hpp"
-#include "CPlayerContext.hpp"
 
 struct CTransform
 {

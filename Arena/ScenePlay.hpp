@@ -27,14 +27,14 @@ public:
 
 	void sRender(sf::RenderWindow& window) override {
 		float radianToDegree = m_config.radianToDegree;
-		m_registry.view<CCollision, CRenderable>().each([&](const entt::entity entiy, CCollision& cPhysics, CRenderable& cRender) {
+		m_registry.view<CCollision, CRenderable>().each([&](const entt::entity entity, CCollision& cPhysics, CRenderable& cRender) {
 			sf::Transform t;
 			auto& pos = cPhysics.body->GetPosition();
 			auto radian = cPhysics.body->GetAngle();
 			t.translate({ pos.x, pos.y }).rotate(radian * radianToDegree);
 			window.draw(cRender.shape, t);
 			});
-		m_registry.view<CCollision, CAnimation, CPlayerContext>().each([&](const entt::entity entiy, CCollision& cPhysics, CAnimation& cAnimation, CPlayerContext& CPlayerContext) {
+		m_registry.view<CCollision, CAnimation, CPlayerContext>().each([&](const entt::entity entity, CCollision& cPhysics, CAnimation& cAnimation, CPlayerContext& CPlayerContext) {
 			sf::Transform t;
 			auto& pos = cPhysics.body->GetPosition();
 			auto radian = cPhysics.body->GetAngle();
@@ -43,26 +43,16 @@ public:
 			});
 	}
 	void sUpdate() override {
-		m_registry.view<CPlayerContext, CCollision>().each([&](const entt::entity entiy, CPlayerContext& cPlayerContext, CCollision& cCollision) {
+		m_registry.view<CPlayerContext, CCollision>().each([&](const entt::entity entity, CPlayerContext& cPlayerContext, CCollision& cCollision) {
 			// Update state
 			cPlayerContext.update();
 			// Update player velocity
 			cCollision.body->SetLinearVelocity(cPlayerContext.calculateNextVelocity(cCollision.body->GetLinearVelocity()));
 			});
 		// Change state animation if necessary
-		m_registry.view<CPlayerContext, CAnimation>().each([&](const entt::entity entiy, CPlayerContext& CPlayerContext, CAnimation& cAnimation) {
+		m_registry.view<CPlayerContext, CAnimation>().each([&](const entt::entity entity, CPlayerContext& CPlayerContext, CAnimation& cAnimation) {
 			if (CPlayerContext.retrieveAndResetNeedAnimationUpdate()) {
-				switch (CPlayerContext.getCurrentStateID())
-				{
-				case StateID::Idle:
-					m_registry.replace<CAnimation>(entiy, ShinobiAnimation::getIdle());
-					break;
-				case StateID::Jump:
-					m_registry.replace<CAnimation>(entiy, ShinobiAnimation::getJump());
-					break;
-				default:
-					break;
-				}
+				m_registry.emplace_or_replace<CAnimation>(entity, CPlayerContext.getAnimation());
 			}
 			});
 
