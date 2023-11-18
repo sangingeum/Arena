@@ -27,7 +27,7 @@ public:
 		//anim.sprite.getTextureRect();
 		auto& cCollision = registry.emplace<CCollision>(entity, world, entity, xPos, yPos, b2BodyType::b2_dynamicBody, true);
 		cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.6f, 0.f, halfHeight * 0.35f, 0.f, 0.9f, 0.f, 1.f, false); // hitbox
-		auto* footFixture = cCollision.addBoxFixture(halfWidth * 0.20f, halfHeight * 0.05f, 0.f, halfHeight, 0.f, 0.0f, 0.f, 0.f, true); // foot sensor
+		auto* footFixture = cCollision.addBoxFixture(halfWidth * 0.25f, halfHeight * 0.05f, 0.f, halfHeight, 0.f, 0.0f, 0.f, 0.f, true); // foot sensor
 		footFixture->GetUserData().pointer = 10000; // foot
 		auto& cPlayerContext = registry.emplace<CPlayerContext>(entity);
 
@@ -37,8 +37,10 @@ public:
 		cPlayerContext.setJumpAnimationGetter([]() { return ShinobiAnimation::getJump(); });
 		cPlayerContext.setRunAnimationGetter([]() { return ShinobiAnimation::getRun(); });
 		cPlayerContext.setWalkAnimationGetter([]() { return ShinobiAnimation::getWalk(); });
-		cPlayerContext.setAttackAnimationGetter([]() { return ShinobiAnimation::getAttack_1(); });
-
+		cPlayerContext.setAttack1AnimationGetter([]() { return ShinobiAnimation::getAttack_1(); });
+		cPlayerContext.setAttack2AnimationGetter([]() { return ShinobiAnimation::getAttack_2(); });
+		cPlayerContext.setAttack3AnimationGetter([]() { return ShinobiAnimation::getAttack_3(); });
+		cPlayerContext.setShieldAnimationGetter([]() { return ShinobiAnimation::getShield(); });
 		return entity;
 	}
 };

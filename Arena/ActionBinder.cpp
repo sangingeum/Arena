@@ -3,11 +3,11 @@
 ActionBinder::ActionBinder() {
 	// Initial Keyboard Binding
 	// Character movements
-	m_keyMap[sf::Keyboard::Scancode::W] = ActionID::characterMoveUp;
-	m_keyMap[sf::Keyboard::Scancode::A] = ActionID::characterMoveLeft;
-	m_keyMap[sf::Keyboard::Scancode::S] = ActionID::characterMoveDown;
-	m_keyMap[sf::Keyboard::Scancode::D] = ActionID::characterMoveRight;
-	m_keyMap[sf::Keyboard::Scancode::Space] = ActionID::characterJump;
+	//m_keyMap[sf::Keyboard::Scancode::Up] = ActionID::characterMoveUp;
+	m_keyMap[sf::Keyboard::Scancode::Left] = ActionID::characterMoveLeft;
+	m_keyMap[sf::Keyboard::Scancode::Down] = ActionID::characterMoveDown;
+	m_keyMap[sf::Keyboard::Scancode::Right] = ActionID::characterMoveRight;
+	m_keyMap[sf::Keyboard::Scancode::Up] = ActionID::characterJump;
 	m_keyMap[sf::Keyboard::Scancode::Z] = ActionID::characterAttack1;
 	m_keyMap[sf::Keyboard::Scancode::X] = ActionID::characterAttack2;
 	m_keyMap[sf::Keyboard::Scancode::C] = ActionID::characterAttack3;
