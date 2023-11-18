@@ -99,7 +99,6 @@
     <ClCompile Include="CPlayerInput.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScenePlay.hpp">
@@ -177,6 +176,11 @@
     <ClInclude Include="CPlayerInput.hpp">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionFilter.hpp" />
+    <ClInclude Include="CollisionFilter.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryCallback.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

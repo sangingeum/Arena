@@ -162,7 +162,6 @@
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="ActionBinder.cpp" />
     <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="CollisionFilter.cpp" />
     <ClCompile Include="CPlayerInput.cpp" />
     <ClCompile Include="BaseGameSystem.cpp" />
     <ClCompile Include="CharacterData.cpp" />
@@ -196,6 +195,7 @@
     <ClInclude Include="CPlayerContext.hpp" />
     <ClInclude Include="EntityFactory.hpp" />
     <ClInclude Include="GameSystem.hpp" />
+    <ClInclude Include="QueryCallback.hpp" />
     <ClInclude Include="RayCastCallback.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneLoader.hpp" />

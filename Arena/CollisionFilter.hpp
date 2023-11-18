@@ -3,9 +3,9 @@
 #include <type_traits>
 
 enum class CollisionFilter : uint16_t {
-	all = 0x0001,
-	notAllocated2 = 0x0002,
-	notAllocated3 = 0x0004,
+	defaultFilter = 0x0001,
+	movableObject = 0x0002,
+	character = 0x0004,
 	notAllocated4 = 0x0008,
 
 	notAllocated5 = 0x0010,
@@ -37,6 +37,9 @@ public:
 	static uint16_t createFilter(Filter category, Args... categories) {
 		static_assert(std::is_same<decltype(category), CollisionFilter>::value, "category must be CollisionFilter");
 		return static_cast<uint16_t>(category) + createFilter(categories...);
+	}
+	constexpr static uint16_t getFullFilter() {
+		return 0xFFFF;
 	}
 };
 
